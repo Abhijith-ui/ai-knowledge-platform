@@ -3,11 +3,15 @@ __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
 
 # Virtual environments
 .venv/
 venv/
 env/
+.envrc
 
 # Conda
 .conda/
@@ -28,7 +32,6 @@ logs/
 *.log
 
 # Testing
-.pytest_cache/
 .coverage
 
 # Build
