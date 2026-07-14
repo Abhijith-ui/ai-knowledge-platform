@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 
+from ai_knowledge_platform.api.router import api_router
 from ai_knowledge_platform.core.config import get_settings
 
 settings = get_settings()
@@ -11,12 +12,4 @@ app = FastAPI(
 )
 
 
-@app.get("/", tags=["Health"])
-async def health_check() -> dict[str, str]:
-    """
-    Basic health check endpoint.
-
-    Returns:
-        A simple message indicating that the API is running.
-    """
-    return {"message": "AI Knowledge Platform API is running"}
+app.include_router(api_router)
