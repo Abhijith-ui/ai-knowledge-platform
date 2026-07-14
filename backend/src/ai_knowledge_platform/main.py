@@ -2,14 +2,15 @@ from fastapi import FastAPI
 
 from ai_knowledge_platform.api.router import api_router
 from ai_knowledge_platform.core.config import get_settings
+from ai_knowledge_platform.core.lifespan import lifespan
 
 settings = get_settings()
 
 app = FastAPI(
-    title="AI Knowledge Platform",
-    description="Production-grade AI Knowledge Platform API",
-    version="0.1.0",
+    title=settings.app_name,
+    description=settings.app_description,
+    version=settings.app_version,
+    lifespan=lifespan,
 )
-
 
 app.include_router(api_router)
