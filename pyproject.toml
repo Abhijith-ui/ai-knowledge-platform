@@ -1,0 +1,96 @@
+###############################################################################
+# Build System
+###############################################################################
+
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+###############################################################################
+# Project Metadata
+###############################################################################
+
+[project]
+name = "ai-knowledge-platform"
+version = "0.1.0"
+description = "Production-grade AI Knowledge Platform"
+readme = "README.md"
+requires-python = ">=3.12"
+
+authors = [
+    { name = "Abhijith" }
+]
+
+###############################################################################
+# Runtime Dependencies
+###############################################################################
+
+dependencies = [
+    "fastapi>=0.139.0",
+    "uvicorn[standard]>=0.51.0",
+    "sqlalchemy>=2.0.51",
+    "alembic>=1.18.5",
+    "python-dotenv>=1.2.2",
+]
+
+###############################################################################
+# Optional Development Dependencies
+###############################################################################
+
+[project.optional-dependencies]
+
+dev = [
+    "black",
+    "ruff",
+    "mypy",
+    "pytest",
+    "pytest-cov",
+    "pre-commit",
+]
+
+###############################################################################
+# Black
+###############################################################################
+
+[tool.black]
+
+line-length = 88
+
+target-version = ["py312"]
+
+###############################################################################
+# Ruff
+###############################################################################
+
+[tool.ruff]
+
+line-length = 88
+
+target-version = "py312"
+
+[tool.ruff.lint]
+
+select = [
+    "E",
+    "F",
+    "I",
+    "B",
+]
+
+###############################################################################
+# MyPy
+###############################################################################
+
+[tool.mypy]
+
+python_version = "3.12"
+
+warn_return_any = true
+
+warn_unused_configs = true
+
+disallow_untyped_defs = true
+
+check_untyped_defs = true
+
+ignore_missing_imports = true
