@@ -1,9 +1,15 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
 from sqlalchemy import String
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ai_knowledge_platform.db.base import Base
+
+if TYPE_CHECKING:
+    from ai_knowledge_platform.models.user_credential import UserCredential
 
 
 class User(Base):
@@ -19,4 +25,10 @@ class User(Base):
         unique=True,
         index=True,
         nullable=False,
+    )
+
+    credential: Mapped[UserCredential] = relationship(
+        back_populates="user",
+        uselist=False,
+        cascade="all, delete-orphan",
     )

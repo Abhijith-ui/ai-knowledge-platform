@@ -7,7 +7,7 @@ from logging.config import fileConfig
 
 from ai_knowledge_platform.core.config import get_settings
 from ai_knowledge_platform.db.base import Base
-from ai_knowledge_platform.models import User  # noqa: F401
+from ai_knowledge_platform.models import User, UserCredential  # noqa: F401
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 
