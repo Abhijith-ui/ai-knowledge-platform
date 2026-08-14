@@ -6,12 +6,12 @@ from ai_knowledge_platform.repositories.user import UserRepository
 
 class UserService:
     def __init__(self, db: Session) -> None:
-        self.respository = UserRepository(db)
+        self.repository = UserRepository(db)
 
     def create_user(self, email: str) -> User:
-        existing_user = self.respository.get_by_email(email)
+        existing_user = self.repository.get_by_email(email)
 
         if existing_user:
             raise ValueError(f"User with email {email} already exists.")
 
-        return self.respository.create(email)
+        return self.repository.create(email)
