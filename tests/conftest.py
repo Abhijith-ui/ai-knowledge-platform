@@ -1,6 +1,7 @@
 import pytest
 from ai_knowledge_platform.db.base import Base
-from sqlalchemy import create_engine
+from ai_knowledge_platform.models.user import User
+from sqlalchemy import create_engine, delete
 from sqlalchemy.orm import Session
 
 
@@ -13,7 +14,11 @@ def db() -> Session:
     Base.metadata.create_all(engine)
 
     with Session(engine) as session:
+        session.execute(delete(User))
+        session.commit()
+
         yield session
+
         session.rollback()
 
     engine.dispose()
