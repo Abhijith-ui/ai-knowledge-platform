@@ -57,8 +57,8 @@ class Settings(BaseSettings):
         gt=0,
     )
 
-    jwt_private_key: str = ""
-    jwt_public_key: str = ""
+    jwt_private_key_path: str = "secrets/jwt_private.pem"
+    jwt_public_key_path: str = "secrets/jwt_public.pem"
 
     @field_validator("jwt_algorithm")
     @classmethod
