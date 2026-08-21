@@ -1,5 +1,6 @@
 from functools import lru_cache
 
+from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -40,6 +41,33 @@ class Settings(BaseSettings):
             f"{self.postgres_db}"
         )
 
+    # ==========================================================
+    # Authentication
+    # ==========================================================
+
+    jwt_algorithm: str = "RS256"
+
+    jwt_access_token_expire_minutes: int = Field(
+        default=15,
+        gt=0,
+    )
+
+    jwt_refresh_token_expire_days: int = Field(
+        default=30,
+        gt=0,
+    )
+
+    jwt_private_key: str = ""
+    jwt_public_key: str = ""
+
+    @field_validator("jwt_algorithm")
+    @classmethod
+    def validate_jwt_algorithm(cls, value: str) -> str:
+        if value != "RS256":
+            raise ValueError("Only RS256 is supported.")
+
+        return value
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
@@ -48,5 +76,4 @@ class Settings(BaseSettings):
 
 @lru_cache()
 def get_settings() -> Settings:
-
     return Settings()
