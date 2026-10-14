@@ -12,7 +12,11 @@ from ai_knowledge_platform.schemas.auth import (
     TokenResponse,
 )
 from ai_knowledge_platform.security.jwt import JWTService
-from ai_knowledge_platform.services.auth import AuthenticationError, AuthService
+from ai_knowledge_platform.services.auth import (
+    AuthenticationError,
+    AuthService,
+    RefreshTokenReuseError,
+)
 
 router = APIRouter(prefix="/auth", tags=["authentication"])
 
@@ -56,20 +60,36 @@ def refresh(
     db: Session = Depends(get_db),
     jwt_service: JWTService = Depends(get_jwt_service),
 ) -> dict[str, str | int]:
-    """Rotate a refresh token and issue a new access token."""
+    """Rotate a refresh token and detect refresh-token reuse."""
     service = AuthService(db, jwt_service)
 
     try:
-        return service.refresh(refresh_token=payload.refresh_token)
+        tokens = service.refresh(refresh_token=payload.refresh_token)
+        db.commit()
+        return tokens
+
+    except RefreshTokenReuseError as exc:
+        # Persist the security action even though the request is rejected.
+        try:
+            db.commit()
+        except Exception:
+            db.rollback()
+            raise
+
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid refresh token.",
+            headers={"WWW-Authenticate": "Bearer"},
+        ) from exc
+
     except AuthenticationError as exc:
-        # Refresh-token reuse detection may already have committed family
-        # revocation. This rollback only cleans up any remaining transaction.
         db.rollback()
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid refresh token.",
             headers={"WWW-Authenticate": "Bearer"},
         ) from exc
+
     except Exception:
         db.rollback()
         raise

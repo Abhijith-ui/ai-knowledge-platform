@@ -7,7 +7,20 @@ from ai_knowledge_platform.services import auth
 from ai_knowledge_platform.services.auth import (
     AuthenticationError,
     AuthService,
+    RefreshTokenReuseError,
 )
+
+
+def make_service() -> tuple[AuthService, Mock, Mock]:
+    """Build an AuthService with mocked dependencies."""
+    db = Mock()
+    jwt_service = Mock()
+    service = AuthService(db, jwt_service)
+
+    service.users = Mock()
+    service.refresh_sessions = Mock()
+
+    return service, db, jwt_service
 
 
 def test_refresh_success_rotates_token() -> None:
@@ -49,26 +62,31 @@ def test_refresh_success_rotates_token() -> None:
         service.refresh_sessions.mark_rotated.call_args.kwargs["successor_id"]
         == successor.id
     )
-    db.commit.assert_called_once()
+
+    # Transaction boundaries belong to the API layer.
+    db.commit.assert_not_called()
+    db.rollback.assert_not_called()
 
 
 def test_refresh_reuse_revokes_token_family() -> None:
     service, db, jwt_service = make_service()
 
-    user_id = uuid4()
     family_id = uuid4()
 
     session = Mock()
     session.id = uuid4()
-    session.user_id = user_id
+    session.user_id = uuid4()
     session.family_id = family_id
     session.revoked_at = datetime.now(UTC)
     session.replaced_by_id = uuid4()
 
-    jwt_service.decode_token.return_value = {"sub": str(user_id)}
+    jwt_service.decode_token.return_value = {"sub": str(session.user_id)}
     service.refresh_sessions.get_by_token_hash.return_value = session
 
-    with pytest.raises(AuthenticationError, match="Invalid refresh token"):
+    with pytest.raises(
+        RefreshTokenReuseError,
+        match="Previously rotated refresh token was reused",
+    ):
         service.refresh(refresh_token="previously-used-token")
 
     service.refresh_sessions.revoke_family.assert_called_once()
@@ -76,7 +94,10 @@ def test_refresh_reuse_revokes_token_family() -> None:
         service.refresh_sessions.revoke_family.call_args.kwargs["family_id"]
         == family_id
     )
-    db.commit.assert_called_once()
+
+    # The API layer must commit this security action.
+    db.commit.assert_not_called()
+    db.rollback.assert_not_called()
 
 
 def test_refresh_rejects_expired_session() -> None:
@@ -95,23 +116,16 @@ def test_refresh_rejects_expired_session() -> None:
     jwt_service.decode_token.return_value = {"sub": str(user_id)}
     service.refresh_sessions.get_by_token_hash.return_value = session
 
-    with pytest.raises(AuthenticationError, match="Invalid refresh token"):
+    with pytest.raises(
+        AuthenticationError,
+        match="Invalid refresh token",
+    ):
         service.refresh(refresh_token="expired-refresh-token")
 
     service.refresh_sessions.create.assert_not_called()
     service.refresh_sessions.mark_rotated.assert_not_called()
     db.commit.assert_not_called()
-
-
-def make_service() -> tuple[AuthService, Mock, Mock]:
-    db = Mock()
-    jwt_service = Mock()
-    service = AuthService(db, jwt_service)
-
-    service.users = Mock()
-    service.refresh_sessions = Mock()
-
-    return service, db, jwt_service
+    db.rollback.assert_not_called()
 
 
 def test_login_rejects_unknown_user() -> None:

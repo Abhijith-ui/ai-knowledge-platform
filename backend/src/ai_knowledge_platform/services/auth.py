@@ -21,6 +21,10 @@ class AuthenticationError(Exception):
     """Raised when authentication cannot be completed."""
 
 
+class RefreshTokenReuseError(AuthenticationError):
+    """Raised when a previously rotated refresh token is reused."""
+
+
 class AuthService:
     """Coordinate credential verification and refresh-token lifecycle."""
 
@@ -77,7 +81,7 @@ class AuthService:
             "access_token": access_token,
             "refresh_token": refresh_token,
             "token_type": "bearer",
-            "expires_in": self.settings.jwt_access_token_expire_minutes * 60,
+            "expires_in": (self.settings.jwt_access_token_expire_minutes * 60),
         }
 
     def refresh(
@@ -98,72 +102,60 @@ class AuthService:
         now = datetime.now(UTC)
         token_hash = self._hash_refresh_token(refresh_token)
 
-        try:
-            session = self.refresh_sessions.get_by_token_hash(
-                self.db,
-                token_hash,
-                for_update=True,
-            )
+        session = self.refresh_sessions.get_by_token_hash(
+            self.db,
+            token_hash,
+            for_update=True,
+        )
 
-            if session is None:
-                raise AuthenticationError("Invalid refresh token.")
+        if session is None or session.user_id != user_id:
+            raise AuthenticationError("Invalid refresh token.")
 
-            if session.user_id != user_id:
-                raise AuthenticationError("Invalid refresh token.")
+        if session.revoked_at is not None:
+            if session.replaced_by_id is not None:
+                self.refresh_sessions.revoke_family(
+                    self.db,
+                    family_id=session.family_id,
+                    revoked_at=now,
+                )
+                raise RefreshTokenReuseError(
+                    "Previously rotated refresh token was reused."
+                )
 
-            if session.revoked_at is not None:
-                if session.replaced_by_id is not None:
-                    self.refresh_sessions.revoke_family(
-                        self.db,
-                        family_id=session.family_id,
-                        revoked_at=now,
-                    )
-                    self.db.commit()
+            raise AuthenticationError("Invalid refresh token.")
 
-                raise AuthenticationError("Invalid refresh token.")
+        if session.expires_at <= now:
+            raise AuthenticationError("Invalid refresh token.")
 
-            if session.expires_at <= now:
-                raise AuthenticationError("Invalid refresh token.")
+        new_refresh_token = self.jwt_service.create_refresh_token(user_id)
+        new_access_token = self.jwt_service.create_access_token(user_id)
 
-            new_refresh_token = self.jwt_service.create_refresh_token(user_id)
-            new_access_token = self.jwt_service.create_access_token(user_id)
+        successor = self.refresh_sessions.create(
+            self.db,
+            user_id=user_id,
+            token_hash=self._hash_refresh_token(new_refresh_token),
+            family_id=session.family_id,
+            created_at=now,
+            expires_at=now
+            + timedelta(days=self.settings.jwt_refresh_token_expire_days),
+        )
 
-            successor = self.refresh_sessions.create(
-                self.db,
-                user_id=user_id,
-                token_hash=self._hash_refresh_token(new_refresh_token),
-                family_id=session.family_id,
-                created_at=now,
-                expires_at=now
-                + timedelta(days=self.settings.jwt_refresh_token_expire_days),
-            )
+        rotated = self.refresh_sessions.mark_rotated(
+            self.db,
+            session_id=session.id,
+            successor_id=successor.id,
+            revoked_at=now,
+        )
 
-            rotated = self.refresh_sessions.mark_rotated(
-                self.db,
-                session_id=session.id,
-                successor_id=successor.id,
-                revoked_at=now,
-            )
+        if not rotated:
+            raise AuthenticationError("Invalid refresh token.")
 
-            if not rotated:
-                self.db.rollback()
-                raise AuthenticationError("Invalid refresh token.")
-
-            self.db.commit()
-
-            return {
-                "access_token": new_access_token,
-                "refresh_token": new_refresh_token,
-                "token_type": "bearer",
-                "expires_in": self.settings.jwt_access_token_expire_minutes * 60,
-            }
-
-        except AuthenticationError:
-            self.db.rollback()
-            raise
-        except Exception:
-            self.db.rollback()
-            raise
+        return {
+            "access_token": new_access_token,
+            "refresh_token": new_refresh_token,
+            "token_type": "bearer",
+            "expires_in": (self.settings.jwt_access_token_expire_minutes * 60),
+        }
 
     def logout(self, *, refresh_token: str) -> None:
         """Revoke the session associated with a refresh token."""
