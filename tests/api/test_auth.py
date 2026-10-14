@@ -137,3 +137,42 @@ def test_login_rejects_invalid_request_body(client: TestClient) -> None:
     )
 
     assert response.status_code == 422
+
+
+def test_me_accepts_valid_access_token(client: TestClient) -> None:
+    tokens = register_and_login(client, "me-success@example.com")
+
+    response = client.get(
+        "/api/v1/auth/me",
+        headers={"Authorization": f"Bearer {tokens['access_token']}"},
+    )
+
+    assert response.status_code == 200
+    assert response.json()["user_id"]
+
+
+def test_me_rejects_missing_token(client: TestClient) -> None:
+    response = client.get("/api/v1/auth/me")
+
+    assert response.status_code == 401
+    assert response.headers["www-authenticate"] == "Bearer"
+
+
+def test_me_rejects_refresh_token(client: TestClient) -> None:
+    tokens = register_and_login(client, "me-refresh@example.com")
+
+    response = client.get(
+        "/api/v1/auth/me",
+        headers={"Authorization": f"Bearer {tokens['refresh_token']}"},
+    )
+
+    assert response.status_code == 401
+
+
+def test_me_rejects_invalid_token(client: TestClient) -> None:
+    response = client.get(
+        "/api/v1/auth/me",
+        headers={"Authorization": "Bearer invalid-token"},
+    )
+
+    assert response.status_code == 401
