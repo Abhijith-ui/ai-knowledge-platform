@@ -3,7 +3,11 @@ from uuid import UUID
 
 from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from sqlalchemy.orm import Session
 
+from ai_knowledge_platform.db.session import get_db
+from ai_knowledge_platform.models.user import User
+from ai_knowledge_platform.repositories.user import UserRepository
 from ai_knowledge_platform.security.jwt import (
     JWTService,
     TokenType,
@@ -40,3 +44,20 @@ def get_current_user_id(
         return UUID(claims["sub"])
     except (TokenValidationError, KeyError, ValueError, TypeError) as exc:
         raise unauthorized from exc
+
+
+def get_current_user(
+    user_id: UUID = Depends(get_current_user_id),
+    db: Session = Depends(get_db),
+) -> User:
+    """Return the authenticated user if the account still exists."""
+    user = UserRepository(db).get_by_id(user_id)
+
+    if user is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid authentication credentials.",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    return user

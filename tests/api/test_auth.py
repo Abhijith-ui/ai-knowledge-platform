@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from fastapi.testclient import TestClient
 
 
@@ -176,3 +178,19 @@ def test_me_rejects_invalid_token(client: TestClient) -> None:
     )
 
     assert response.status_code == 401
+
+
+def test_me_rejects_nonexistent_user(client: TestClient) -> None:
+    nonexistent_user_id = str(uuid4())
+
+    # Use the application's JWT service to create a valid access token.
+    jwt_service = client.app.state.jwt_service
+    access_token = jwt_service.create_access_token(nonexistent_user_id)
+
+    response = client.get(
+        "/api/v1/auth/me",
+        headers={"Authorization": f"Bearer {access_token}"},
+    )
+
+    assert response.status_code == 401
+    assert response.json()["detail"] == ("Invalid authentication credentials.")

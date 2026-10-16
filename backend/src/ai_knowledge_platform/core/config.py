@@ -1,4 +1,5 @@
 from functools import lru_cache
+from pathlib import Path
 
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -40,6 +41,18 @@ class Settings(BaseSettings):
             f"{self.postgres_port}/"
             f"{self.postgres_db}"
         )
+
+        # ==========================================================
+
+    # Document Storage
+    # ==========================================================
+
+    document_storage_dir: Path = Path("var/documents")
+
+    max_document_upload_bytes: int = Field(
+        default=10 * 1024 * 1024,
+        gt=0,
+    )
 
     # ==========================================================
     # Authentication
