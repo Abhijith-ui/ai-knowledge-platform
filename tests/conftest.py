@@ -7,17 +7,18 @@ from ai_knowledge_platform.models.user_credential import UserCredential
 from sqlalchemy import create_engine, delete
 from sqlalchemy.orm import Session
 
+from tests.support.database import get_test_database_url
+
 
 @pytest.fixture
 def db() -> Session:
-    """Provide a PostgreSQL session with a clean database for each test."""
-    engine = create_engine(
-        "postgresql+psycopg://postgres:postgres@localhost:5432/ai_knowledge_platform"
-    )
-
-    Base.metadata.create_all(engine)
+    """Provide a PostgreSQL session with isolated test data."""
+    database_url = get_test_database_url()
+    engine = create_engine(database_url, pool_pre_ping=True)
 
     try:
+        Base.metadata.create_all(engine)
+
         with Session(engine) as session:
             session.execute(delete(Document))
             session.execute(delete(RefreshSession))
