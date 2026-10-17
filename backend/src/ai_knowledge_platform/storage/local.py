@@ -59,6 +59,9 @@ class LocalFileStorage:
 
         target = self._resolve_key(key)
         temporary_path: Path | None = None
+        final_identity: tuple[int, int] | None = None
+        final_created = False
+        completed = False
 
         try:
             target.parent.mkdir(parents=True, exist_ok=True)
@@ -101,21 +104,29 @@ class LocalFileStorage:
                 temporary_file.flush()
                 os.fsync(temporary_file.fileno())
 
-            # os.link creates the final name atomically and fails if it exists.
-            # The temporary file is in the same directory, so both names are
-            # on the same filesystem.
+                file_stat = os.fstat(temporary_file.fileno())
+                final_identity = (file_stat.st_dev, file_stat.st_ino)
+
+            # Atomically create the final name without overwriting an
+            # existing file. Both names are on the same filesystem.
             try:
                 os.link(temporary_path, target)
             except FileExistsError as exc:
                 raise StorageError("Storage key already exists.") from exc
 
+            final_created = True
+
+            # If this fails, finally will attempt to remove the final file.
             temporary_path.unlink()
             temporary_path = None
 
-            return StoredObject(
+            stored_object = StoredObject(
                 size_bytes=size_bytes,
                 checksum_sha256=digest.hexdigest(),
             )
+
+            completed = True
+            return stored_object
 
         except (
             InvalidStorageKeyError,
@@ -127,11 +138,35 @@ class LocalFileStorage:
             raise
         except OSError as exc:
             raise StorageError("Unable to persist the uploaded file.") from exc
-        finally:
-            if temporary_path is not None:
-                # Preserve an exception already being raised if cleanup fails.
-                active_exception = sys.exc_info()[0] is not None
 
+        finally:
+            active_exception = sys.exc_info()[0] is not None
+
+            # Clean up the final file only if this operation created it and
+            # the path still identifies the same filesystem object.
+            if final_created and not completed and final_identity is not None:
+                try:
+                    target_stat = target.stat()
+                    target_identity = (target_stat.st_dev, target_stat.st_ino)
+
+                    if target_identity == final_identity:
+                        target.unlink()
+
+                except FileNotFoundError:
+                    pass
+                except OSError as exc:
+                    if active_exception:
+                        logger.exception(
+                            "Failed to clean up a finalized upload after failure."
+                        )
+                    else:
+                        raise StorageError(
+                            "Unable to clean up a finalized upload."
+                        ) from exc
+
+            # Clean up any remaining temporary filename without replacing
+            # the original exception if cleanup itself fails.
+            if temporary_path is not None:
                 try:
                     temporary_path.unlink(missing_ok=True)
                 except OSError:

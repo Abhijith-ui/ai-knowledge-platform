@@ -164,3 +164,65 @@ def test_save_preserves_original_exception_if_temp_cleanup_fails(
             failing_chunks(),
             max_bytes=1024,
         )
+
+
+def test_save_removes_final_file_if_temp_unlink_fails(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Remove the final file if temporary-file cleanup breaks finalization."""
+    storage_root = tmp_path / "storage"
+    storage = LocalFileStorage(storage_root)
+    key = "documents/report.txt"
+    original_unlink = Path.unlink
+    failed_once = False
+
+    def fail_first_temp_unlink(
+        path: Path,
+        *args,
+        **kwargs,
+    ) -> None:
+        nonlocal failed_once
+
+        if (
+            path.name.startswith(".upload-")
+            and path.suffix == ".tmp"
+            and not failed_once
+        ):
+            failed_once = True
+            raise OSError("Simulated temporary-file cleanup failure")
+
+        original_unlink(path, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "unlink", fail_first_temp_unlink)
+
+    with pytest.raises(StorageError):
+        storage.save(key, [b"document content"], max_bytes=1024)
+
+    assert failed_once
+    assert not (storage_root / key).exists()
+    assert not list((storage_root / "documents").glob(".upload-*.tmp"))
+
+
+def test_save_removes_final_file_if_result_creation_fails(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Clean up the final file if result creation fails after finalization."""
+    storage_root = tmp_path / "storage"
+    storage = LocalFileStorage(storage_root)
+    key = "documents/report.txt"
+
+    def fail_stored_object(**kwargs: object) -> None:
+        raise RuntimeError("Simulated result creation failure")
+
+    monkeypatch.setattr(
+        "ai_knowledge_platform.storage.local.StoredObject",
+        fail_stored_object,
+    )
+
+    with pytest.raises(RuntimeError, match="Simulated result creation failure"):
+        storage.save(key, [b"document content"], max_bytes=1024)
+
+    assert not (storage_root / key).exists()
+    assert not list((storage_root / "documents").glob(".upload-*.tmp"))
