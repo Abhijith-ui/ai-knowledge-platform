@@ -178,3 +178,24 @@ def test_list_documents_validates_pagination(
     assert invalid_limit.status_code == 422
     assert invalid_offset.status_code == 422
     assert excessive_limit.status_code == 422
+
+
+def test_upload_rejects_request_exceeding_request_size_limit(
+    client: TestClient,
+) -> None:
+    """Reject oversized upload requests through the FastAPI middleware."""
+    response = client.post(
+        "/api/v1/documents",
+        files={
+            "file": (
+                "oversized.pdf",
+                b"x" * 2048,
+                "application/pdf",
+            )
+        },
+    )
+
+    assert response.status_code == 413
+    assert response.json()["detail"] == (
+        "Document upload request exceeds the maximum allowed size."
+    )

@@ -56,6 +56,7 @@ def client(
         jwt_public_key_path=str(public_key_path),
         document_storage_dir=tmp_path / "documents",
         max_document_upload_bytes=1024 * 1024,
+        max_document_request_bytes=1024,
     )
 
     monkeypatch.setattr(
@@ -64,6 +65,10 @@ def client(
     )
     monkeypatch.setattr(
         "ai_knowledge_platform.services.document.get_settings",
+        lambda: settings,
+    )
+    monkeypatch.setattr(
+        "ai_knowledge_platform.core.config.get_settings",
         lambda: settings,
     )
 

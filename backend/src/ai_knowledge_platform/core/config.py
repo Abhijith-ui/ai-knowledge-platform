@@ -30,9 +30,7 @@ class Settings(BaseSettings):
 
     @property
     def database_url(self) -> str:
-        """
-        Build the SQLAlchemy database URL.
-        """
+        """Build the SQLAlchemy database URL."""
         return (
             f"postgresql+psycopg://"
             f"{self.postgres_user}:"
@@ -42,15 +40,19 @@ class Settings(BaseSettings):
             f"{self.postgres_db}"
         )
 
-        # ==========================================================
-
-    # Document Storage
+    # ==========================================================
+    # Document Storage and Upload Limits
     # ==========================================================
 
     document_storage_dir: Path = Path("var/documents")
 
     max_document_upload_bytes: int = Field(
         default=10 * 1024 * 1024,
+        gt=0,
+    )
+
+    max_document_request_bytes: int = Field(
+        default=11 * 1024 * 1024,
         gt=0,
     )
 
@@ -89,4 +91,5 @@ class Settings(BaseSettings):
 
 @lru_cache()
 def get_settings() -> Settings:
+    """Return the cached application settings."""
     return Settings()
