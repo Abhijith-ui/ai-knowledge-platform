@@ -226,3 +226,48 @@ def test_save_removes_final_file_if_result_creation_fails(
 
     assert not (storage_root / key).exists()
     assert not list((storage_root / "documents").glob(".upload-*.tmp"))
+
+
+def test_open_read_returns_seekable_binary_file(tmp_path: Path) -> None:
+    storage = LocalFileStorage(tmp_path / "storage")
+    key = "users/user-1/documents/report.txt"
+    content = b"First line\nSecond line"
+
+    storage.save(key, [content], max_bytes=1024)
+
+    with storage.open_read(key) as stored_file:
+        assert stored_file.read(5) == b"First"
+        assert stored_file.seekable()
+        stored_file.seek(0)
+        assert stored_file.read() == content
+
+
+def test_open_read_rejects_missing_file(tmp_path: Path) -> None:
+    storage = LocalFileStorage(tmp_path / "storage")
+
+    with pytest.raises(StorageError, match="does not exist"):
+        storage.open_read("documents/missing.txt")
+
+
+@pytest.mark.parametrize(
+    "key",
+    [
+        "../outside.txt",
+        "/absolute/path.txt",
+        r"users\user-1\file.txt",
+    ],
+)
+def test_open_read_rejects_unsafe_keys(tmp_path: Path, key: str) -> None:
+    storage = LocalFileStorage(tmp_path / "storage")
+
+    with pytest.raises(InvalidStorageKeyError):
+        storage.open_read(key)
+
+
+def test_open_read_rejects_directory(tmp_path: Path) -> None:
+    storage_root = tmp_path / "storage"
+    storage = LocalFileStorage(storage_root)
+    (storage_root / "documents").mkdir()
+
+    with pytest.raises(StorageError, match="not a regular file"):
+        storage.open_read("documents")

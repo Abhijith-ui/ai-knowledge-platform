@@ -6,9 +6,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    """
-    Application configuration loaded from environment variables.
-    """
+    """Application configuration loaded from environment variables."""
 
     # ==========================================================
     # Application
@@ -53,6 +51,11 @@ class Settings(BaseSettings):
 
     max_document_request_bytes: int = Field(
         default=11 * 1024 * 1024,
+        gt=0,
+    )
+
+    max_extracted_text_chars: int = Field(
+        default=2_000_000,
         gt=0,
     )
 

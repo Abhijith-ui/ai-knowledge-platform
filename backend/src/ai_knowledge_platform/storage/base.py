@@ -1,6 +1,6 @@
 from collections.abc import Iterable
 from dataclasses import dataclass
-from typing import Protocol
+from typing import BinaryIO, Protocol
 
 
 @dataclass(frozen=True, slots=True)
@@ -34,6 +34,10 @@ class FileStorage(Protocol):
         max_bytes: int,
     ) -> StoredObject:
         """Persist streamed file chunks and return their verified metadata."""
+        ...
+
+    def open_read(self, key: str) -> BinaryIO:
+        """Open a stored file for binary reading; the caller must close it."""
         ...
 
     def delete(self, key: str) -> None:

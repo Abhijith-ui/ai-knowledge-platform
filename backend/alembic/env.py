@@ -2,6 +2,7 @@ import sys
 from logging.config import fileConfig
 from pathlib import Path
 
+from ai_knowledge_platform.models.document_content import DocumentContent  # noqa: F401
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 
@@ -16,8 +17,11 @@ from ai_knowledge_platform.models.user_credential import UserCredential  # noqa:
 # Alembic Config object.
 config = context.config
 
-settings = get_settings()
-config.set_main_option("sqlalchemy.url", settings.database_url)
+if not config.get_main_option("sqlalchemy.url"):
+    config.set_main_option(
+        "sqlalchemy.url",
+        get_settings().database_url,
+    )
 
 # Configure logging when a configuration file is available.
 if config.config_file_name is not None:

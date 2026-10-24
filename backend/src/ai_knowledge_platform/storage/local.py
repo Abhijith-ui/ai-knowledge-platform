@@ -5,6 +5,7 @@ import sys
 import tempfile
 from collections.abc import Iterable
 from pathlib import Path, PurePosixPath
+from typing import BinaryIO
 
 from ai_knowledge_platform.storage.base import (
     FileTooLargeError,
@@ -176,6 +177,23 @@ class LocalFileStorage:
                         raise StorageError(
                             "Unable to clean up a temporary upload file."
                         ) from sys.exc_info()[1]
+
+    def open_read(self, key: str) -> BinaryIO:
+        """Open a stored file for binary reading."""
+        target = self._resolve_key(key)
+
+        try:
+            if not target.is_file():
+                raise StorageError(
+                    "Stored file does not exist or is not a regular file."
+                )
+
+            return target.open("rb")
+
+        except StorageError:
+            raise
+        except OSError as exc:
+            raise StorageError("Unable to open the stored file for reading.") from exc
 
     def delete(self, key: str) -> None:
         """Delete a stored file without failing if it is already absent."""
