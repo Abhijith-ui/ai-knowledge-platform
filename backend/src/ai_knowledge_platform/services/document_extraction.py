@@ -32,12 +32,23 @@ class InvalidDocumentError(DocumentExtractionError):
 
 
 @dataclass(frozen=True, slots=True)
+class ExtractedPage:
+    """Represent text extracted from a single PDF page."""
+
+    page_number: int
+    text: str
+    start_char: int
+    end_char: int
+
+
+@dataclass(frozen=True, slots=True)
 class ExtractionResult:
     """Represent extracted text and its metadata."""
 
     text: str
     character_count: int
     page_count: int | None = None
+    pages: tuple[ExtractedPage, ...] = ()
 
 
 class DocumentTextExtractor:
@@ -123,7 +134,7 @@ class DocumentTextExtractor:
         )
 
     def _extract_pdf(self, source: BinaryIO) -> ExtractionResult:
-        """Extract text page by page from a PDF."""
+        """Extract text while preserving PDF page boundaries."""
         reader = PdfReader(source, strict=True)
 
         if reader.is_encrypted:
@@ -136,12 +147,20 @@ class DocumentTextExtractor:
                 raise InvalidDocumentError("Encrypted PDFs are not supported.")
 
         parts: list[str] = []
+        pages: list[ExtractedPage] = []
         character_count = 0
         page_count = len(reader.pages)
 
-        for page_number in range(page_count):
-            page_text = reader.pages[page_number].extract_text() or ""
+        for page_number, page in enumerate(reader.pages, start=1):
+            page_text = page.extract_text() or ""
+
+            # Account for the newline inserted between PDF pages.
+            if parts:
+                character_count += 1
+
+            start_char = character_count
             character_count += len(page_text)
+            end_char = character_count
 
             if character_count > self.max_chars:
                 raise ExtractedTextTooLargeError(
@@ -150,8 +169,16 @@ class DocumentTextExtractor:
 
             parts.append(page_text)
 
+            pages.append(
+                ExtractedPage(
+                    page_number=page_number,
+                    text=page_text,
+                    start_char=start_char,
+                    end_char=end_char,
+                )
+            )
+
         text = "\n".join(parts)
-        self._check_text_size(text)
 
         if not text.strip():
             raise EmptyExtractedTextError("The document contains no extractable text.")
@@ -160,10 +187,11 @@ class DocumentTextExtractor:
             text=text,
             character_count=len(text),
             page_count=page_count,
+            pages=tuple(pages),
         )
 
     def _check_text_size(self, text: str) -> None:
-        """Reject extracted text that exceeds the character limit."""
+        """Reject extracted text that exceeds the configured character limit."""
         if len(text) > self.max_chars:
             raise ExtractedTextTooLargeError(
                 "Extracted text exceeds the configured character limit."

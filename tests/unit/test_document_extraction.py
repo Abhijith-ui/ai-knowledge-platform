@@ -193,3 +193,34 @@ def test_rejects_pdf_without_extractable_text(
             storage_key="documents/blank.pdf",
             content_type="application/pdf",
         )
+
+
+def test_extracts_pdf_page_boundaries(
+    storage: LocalFileStorage,
+) -> None:
+    fixture_path = Path(__file__).resolve().parents[1] / "fixtures" / "multipage.pdf"
+
+    pdf_content = fixture_path.read_bytes()
+    store_file(storage, "documents/multipage.pdf", pdf_content)
+
+    result = DocumentTextExtractor(storage).extract(
+        storage_key="documents/multipage.pdf",
+        content_type="application/pdf",
+    )
+
+    assert result.page_count == 2
+    assert len(result.pages) == 2
+
+    assert result.text == ("First page content.\n" "Second page content.")
+
+    first_page, second_page = result.pages
+
+    assert first_page.page_number == 1
+    assert first_page.text == "First page content."
+
+    assert second_page.page_number == 2
+    assert second_page.text == "Second page content."
+
+    # Verify that page offsets correctly reference the combined text.
+    for page in result.pages:
+        assert result.text[page.start_char : page.end_char] == page.text
