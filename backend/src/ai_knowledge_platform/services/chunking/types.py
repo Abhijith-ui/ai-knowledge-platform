@@ -62,7 +62,7 @@ class DocumentChunk:
                 "page_start and page_end must both be set or both be None."
             )
 
-        if self.page_start is not None:
+        if self.page_start is not None and self.page_end is not None:
             if self.page_start <= 0 or self.page_end <= 0:
                 raise ValueError("Page numbers must be positive.")
 

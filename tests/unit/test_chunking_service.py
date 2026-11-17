@@ -89,7 +89,7 @@ def test_split_preserves_source_offsets(
         assert span.end <= len(text)
 
 
-def test_overlapping_spans_share_source_content(
+def test_atomic_spans_do_not_overlap(
     tokenizer: HuggingFaceTokenizer,
 ) -> None:
     service = DocumentChunkingService(
@@ -111,8 +111,7 @@ def test_overlapping_spans_share_source_content(
     assert len(spans) > 1
 
     for previous, current in zip(spans, spans[1:], strict=False):
-        assert current.start < previous.end
-        assert current.start > previous.start
+        assert current.start >= previous.end
 
 
 def test_chunk_text_returns_single_chunk_for_short_text(
@@ -241,14 +240,16 @@ def test_chunk_text_preserves_complete_source_coverage(
         assert chunk.content == text[chunk.start_char : chunk.end_char]
 
 
-def test_chunk_text_applies_overlap_to_packed_paragraphs(
+def test_chunk_text_applies_token_overlap(
     tokenizer: HuggingFaceTokenizer,
 ) -> None:
+    overlap_tokens = 4
+
     service = DocumentChunkingService(
         tokenizer=tokenizer,
         config=ChunkingConfig(
             target_tokens=20,
-            overlap_tokens=4,
+            overlap_tokens=overlap_tokens,
             minimum_tokens=1,
         ),
     )
@@ -266,6 +267,12 @@ def test_chunk_text_applies_overlap_to_packed_paragraphs(
 
     for previous, current in zip(chunks, chunks[1:], strict=False):
         assert current.start_char < previous.end_char
+
+        overlap_text = text[current.start_char : previous.end_char]
+
+        overlap_count = tokenizer.count_tokens(overlap_text)
+
+        assert overlap_count == overlap_tokens
 
 
 def test_chunk_text_handles_multilingual_content(
@@ -294,3 +301,151 @@ def test_chunk_text_handles_multilingual_content(
     for chunk in chunks:
         assert chunk.token_count <= service.token_budget
         assert chunk.content == text[chunk.start_char : chunk.end_char]
+
+
+def test_chunk_text_preserves_every_character_without_overlap(
+    tokenizer: HuggingFaceTokenizer,
+) -> None:
+    service = DocumentChunkingService(
+        tokenizer=tokenizer,
+        config=ChunkingConfig(
+            target_tokens=20,
+            overlap_tokens=0,
+            minimum_tokens=1,
+        ),
+    )
+
+    text = (
+        "  First paragraph contains useful information.\n\n"
+        "Second paragraph contains more useful information.\n\n"
+        "Third paragraph contains additional information.  "
+    )
+
+    chunks = service.chunk_text(text)
+
+    assert chunks
+    assert chunks[0].start_char == 0
+    assert chunks[-1].end_char == len(text)
+
+    for previous, current in zip(chunks, chunks[1:], strict=False):
+        assert current.start_char == previous.end_char
+
+    reconstructed = "".join(chunk.content for chunk in chunks)
+    assert reconstructed == text
+
+
+def test_every_source_character_is_covered(
+    tokenizer: HuggingFaceTokenizer,
+) -> None:
+    service = DocumentChunkingService(
+        tokenizer=tokenizer,
+        config=ChunkingConfig(
+            target_tokens=20,
+            overlap_tokens=4,
+            minimum_tokens=1,
+        ),
+    )
+
+    text = (
+        "First paragraph contains useful information.\n\n"
+        "Second paragraph contains more useful information.\n\n"
+        "Third paragraph contains additional information."
+    )
+
+    chunks = service.chunk_text(text)
+
+    assert chunks
+    assert chunks[0].start_char == 0
+    assert chunks[-1].end_char == len(text)
+
+    for previous, current in zip(chunks, chunks[1:], strict=False):
+        assert current.start_char <= previous.end_char
+
+    covered = [False] * len(text)
+
+    for chunk in chunks:
+        for position in range(chunk.start_char, chunk.end_char):
+            covered[position] = True
+
+    assert all(covered)
+
+
+def test_all_generated_chunks_respect_token_budget(
+    tokenizer: HuggingFaceTokenizer,
+) -> None:
+    service = DocumentChunkingService(
+        tokenizer=tokenizer,
+        config=ChunkingConfig(
+            target_tokens=20,
+            overlap_tokens=4,
+            minimum_tokens=1,
+        ),
+    )
+
+    text = (
+        "Machine learning is transforming software engineering. "
+        "Neural networks learn complex representations from data. "
+    ) * 30
+
+    chunks = service.chunk_text(text)
+
+    assert chunks
+
+    for chunk in chunks:
+        actual_token_count = tokenizer.count_tokens(chunk.content)
+
+        assert actual_token_count <= service.token_budget
+        assert actual_token_count == chunk.token_count
+
+
+def test_chunk_text_prefers_paragraph_boundaries(
+    tokenizer: HuggingFaceTokenizer,
+) -> None:
+    service = DocumentChunkingService(
+        tokenizer=tokenizer,
+        config=ChunkingConfig(
+            target_tokens=15,
+            overlap_tokens=0,
+            minimum_tokens=1,
+        ),
+    )
+
+    text = (
+        "First paragraph contains useful information.\n\n"
+        "Second paragraph contains important information.\n\n"
+        "Third paragraph contains additional information."
+    )
+
+    chunks = service.chunk_text(text)
+
+    assert len(chunks) > 1
+
+    for chunk in chunks[:-1]:
+        assert chunk.content.rstrip().endswith("information.")
+
+
+def test_chunk_text_prefers_sentence_boundaries(
+    tokenizer: HuggingFaceTokenizer,
+) -> None:
+    service = DocumentChunkingService(
+        tokenizer=tokenizer,
+        config=ChunkingConfig(
+            target_tokens=15,
+            overlap_tokens=0,
+            minimum_tokens=1,
+        ),
+    )
+
+    text = (
+        "Machine learning helps computers learn from data. "
+        "Deep learning uses neural networks to learn representations. "
+        "Natural language processing enables computers to understand text. "
+        "Computer vision enables machines to interpret images."
+    )
+
+    chunks = service.chunk_text(text)
+
+    assert len(chunks) > 1
+
+    for chunk in chunks[:-1]:
+        assert chunk.content.rstrip().endswith((".", "!", "?"))

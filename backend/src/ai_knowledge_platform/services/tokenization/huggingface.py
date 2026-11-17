@@ -20,6 +20,9 @@ class HuggingFaceTokenizer(Tokenizer):
             use_fast=True,
         )
 
+        if not self._tokenizer.is_fast:
+            raise ValueError("A fast tokenizer is required for offset-based chunking.")
+
         self._max_input_tokens = max_input_tokens
 
     def encode(
@@ -28,10 +31,17 @@ class HuggingFaceTokenizer(Tokenizer):
         *,
         add_special_tokens: bool = False,
     ) -> list[int]:
-        return self._tokenizer.encode(
+        token_ids = self._tokenizer.encode(
             text,
             add_special_tokens=add_special_tokens,
         )
+
+        if not isinstance(token_ids, list) or not all(
+            isinstance(token_id, int) for token_id in token_ids
+        ):
+            raise TypeError("Tokenizer encode() must return a list of integers.")
+
+        return token_ids
 
     def decode(
         self,
@@ -39,10 +49,15 @@ class HuggingFaceTokenizer(Tokenizer):
         *,
         skip_special_tokens: bool = True,
     ) -> str:
-        return self._tokenizer.decode(
+        decoded = self._tokenizer.decode(
             token_ids,
             skip_special_tokens=skip_special_tokens,
         )
+
+        if not isinstance(decoded, str):
+            raise TypeError("Tokenizer decode() must return a string.")
+
+        return decoded
 
     def count_tokens(
         self,

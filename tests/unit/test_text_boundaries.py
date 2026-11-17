@@ -95,3 +95,42 @@ def test_sentence_spans_preserve_unicode(
 
     assert text[spans[0].start : spans[0].end] == ("Machine learning is useful.")
     assert text[spans[1].start : spans[1].end] == "नमस्ते दुनिया।"
+
+
+def test_abbreviations_with_multiple_periods(
+    detector: TextBoundaryDetector,
+) -> None:
+    text = "We use e.g. neural networks. They learn representations."
+
+    spans = detector.split_sentences(text)
+
+    assert [text[span.start : span.end] for span in spans] == [
+        "We use e.g. neural networks.",
+        "They learn representations.",
+    ]
+
+
+def test_decimal_numbers_do_not_create_sentence_boundaries(
+    detector: TextBoundaryDetector,
+) -> None:
+    text = "The model achieved an accuracy of 3.14. It performed well."
+
+    spans = detector.split_sentences(text)
+
+    assert [text[span.start : span.end] for span in spans] == [
+        "The model achieved an accuracy of 3.14.",
+        "It performed well.",
+    ]
+
+
+def test_sentence_boundary_after_etc(
+    detector: TextBoundaryDetector,
+) -> None:
+    text = "We studied several techniques, etc. This was useful."
+
+    spans = detector.split_sentences(text)
+
+    assert [text[span.start : span.end] for span in spans] == [
+        "We studied several techniques, etc.",
+        "This was useful.",
+    ]
