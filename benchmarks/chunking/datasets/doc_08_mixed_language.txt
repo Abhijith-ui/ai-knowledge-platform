@@ -1,0 +1,15 @@
+# Building Machine Learning Systems / മെഷീൻ ലേണിംഗ് സിസ്റ്റങ്ങൾ
+
+Machine learning is a field of artificial intelligence that enables systems to learn patterns from data. മെഷീൻ ലേണിംഗ് എന്നത് ഡാറ്റയിൽ നിന്ന് പാറ്റേണുകൾ പഠിക്കുന്ന സാങ്കേതിക മേഖലയാണ്.
+
+A typical ML pipeline includes data collection, preprocessing, training, evaluation, and deployment. ഒരു സാധാരണ മെഷീൻ ലേണിംഗ് പ്രോജക്റ്റിൽ ഡാറ്റ ശേഖരണം, പ്രീപ്രോസസ്സിംഗ്, മോഡൽ പരിശീലനം, വിലയിരുത്തൽ, വിന്യാസം എന്നിവ ഉൾപ്പെടുന്നു.
+
+Data quality is essential because incorrect or incomplete data can negatively affect model performance. ഡാറ്റയുടെ ഗുണനിലവാരം മോഡലിന്റെ പ്രകടനത്തെ നേരിട്ട് ബാധിക്കുന്നു. അതിനാൽ ഡാറ്റ ശുദ്ധീകരണവും പരിശോധനയും വളരെ പ്രധാനമാണ്.
+
+Supervised learning uses labeled examples, while unsupervised learning discovers patterns without predefined labels. സൂപ്പർവൈസ്ഡ് ലേണിംഗിൽ ലേബലുകൾ നൽകിയ ഉദാഹരണങ്ങൾ ഉപയോഗിക്കുന്നു. അൺസൂപ്പർവൈസ്ഡ് ലേണിംഗിൽ മുൻകൂട്ടി നൽകിയ ലേബലുകൾ ഇല്ലാതെ പാറ്റേണുകൾ കണ്ടെത്തുന്നു.
+
+Production systems require monitoring, security, scalability, and reliable error handling. പ്രൊഡക്ഷൻ സിസ്റ്റങ്ങളിൽ നിരീക്ഷണം, സുരക്ഷ, സ്കെയിലബിലിറ്റി, പിശകുകൾ കൈകാര്യം ചെയ്യാനുള്ള സംവിധാനങ്ങൾ എന്നിവ ആവശ്യമാണ്.
+
+A model should be evaluated on unseen data before deployment. വിന്യസിക്കുന്നതിന് മുമ്പ് പുതിയ ഡാറ്റ ഉപയോഗിച്ച് മോഡലിന്റെ പ്രകടനം വിലയിരുത്തണം.
+
+Engineers must also monitor data drift and model degradation over time. കാലക്രമേണ ഡാറ്റയിൽ ഉണ്ടാകുന്ന മാറ്റങ്ങളും മോഡലിന്റെ പ്രകടനത്തിലെ കുറവും നിരീക്ഷിക്കണം.

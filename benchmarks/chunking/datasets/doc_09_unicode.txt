@@ -1,0 +1,21 @@
+# Unicode and Text Processing Stress Test
+
+Unicode supports text from many writing systems: English, മലയാളം, हिन्दी, 日本語, 中文, العربية, and Français.
+
+Mathematical expressions include: x² + y² = z², ∑(i=1 to n) i = n(n+1)/2, α, β, γ, θ, λ, μ, σ, and π.
+
+Machine learning metrics: Accuracy = 0.95, Precision = 0.92, Recall = 0.89, F1 = 2 × (Precision × Recall) / (Precision + Recall).
+
+Special symbols: © ® ™ € £ ₹ ¥ $ % & @ # * + − × ÷ ≈ ≠ ≤ ≥ → ← ↑ ↓ ∞ √ ∫ ∂.
+
+Quoted text: "Machine learning is useful." 'Data quality matters.' “Reliable systems require testing.” ‘Security is essential.’
+
+Punctuation stress: Hello... world!!! Really??? Yes; however, careful testing matters — especially when text contains (parentheses), [brackets], {braces}, and <angle brackets>.
+
+Accented characters: café, naïve, résumé, coöperate, São Paulo, München, and Zürich.
+
+Emoji and supplementary Unicode characters: 😀 🚀 🧠 🌍 🔬 💻. These symbols may occupy multiple bytes in UTF-8 and may require multiple code points.
+
+Numbers and identifiers: 2026-11-18, version 1.2.3, HTTP/2, UTF-8, RFC 8259, and model_id=multilingual-e5-base.
+
+Robust text processing must preserve the original character sequence, maintain valid source offsets, and avoid assumptions that character count, Unicode code-point count, and UTF-8 byte count are identical.

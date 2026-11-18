@@ -1,0 +1,63 @@
+# Machine Learning Engineering Notes
+
+Machine learning starts with a clearly defined problem.
+
+Data quality influences model quality.
+
+Training data must represent the target environment.
+
+Validation data supports model selection.
+
+Test data estimates generalization performance.
+
+Feature engineering transforms raw inputs into useful representations.
+
+Normalization can improve optimization stability.
+
+Regularization helps control overfitting.
+
+Gradient descent updates model parameters iteratively.
+
+Learning rate influences convergence behavior.
+
+Batch size affects computational efficiency and gradient estimates.
+
+Hyperparameter tuning should use validation data.
+
+Data leakage produces misleading evaluation results.
+
+Cross-validation provides more reliable estimates in some settings.
+
+Class imbalance requires careful metric selection.
+
+Precision measures the correctness of positive predictions.
+
+Recall measures the coverage of actual positive examples.
+
+F1-score balances precision and recall.
+
+Calibration measures the reliability of predicted probabilities.
+
+Inference latency matters in interactive applications.
+
+Batch inference can improve throughput.
+
+Caching can reduce repeated computation.
+
+Monitoring detects changes in production behavior.
+
+Data drift can affect model performance.
+
+Model versioning supports reproducibility.
+
+Experiment tracking records development decisions.
+
+Automated tests protect data and inference pipelines.
+
+Continuous integration validates software changes.
+
+Continuous deployment requires controlled release practices.
+
+Rollback procedures reduce deployment risk.
+
+Observability helps engineers diagnose production failures.

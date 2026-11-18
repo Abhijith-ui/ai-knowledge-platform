@@ -1,0 +1,641 @@
+{
+    "tokenizer": "intfloat/multilingual-e5-base",
+    "model_max_input_tokens": 512,
+    "special_tokens": 2,
+    "effective_chunk_budget": 448,
+    "configuration": {
+        "target_tokens": 448,
+        "overlap_tokens": 64,
+        "minimum_tokens": 50
+    },
+    "total_documents": 10,
+    "passed_documents": 10,
+    "failed_documents": 0,
+    "documents": [
+        {
+            "document": "doc_01_short_english.txt",
+            "source_characters": 974,
+            "source_tokens": 195,
+            "chunk_count": 1,
+            "average_chunk_tokens": 195,
+            "maximum_chunk_tokens": 195,
+            "minimum_chunk_tokens": 195,
+            "average_overlap_tokens": 0,
+            "maximum_overlap_tokens": 0,
+            "minimum_overlap_tokens": 0,
+            "zero_overlap_pairs": 0,
+            "adjacent_overlaps": [],
+            "semantic_boundaries": {
+                "total_chunk_boundaries": 0,
+                "paragraph_boundary_endings": 0,
+                "sentence_boundary_endings": 0,
+                "mid_sentence_endings": 0,
+                "boundary_preservation_rate": null
+            },
+            "token_budget": 448,
+            "execution_seconds": 0.0087,
+            "coverage_complete": true,
+            "passed": true,
+            "violations": []
+        },
+        {
+            "document": "doc_02_long_paragraphs.txt",
+            "source_characters": 2682,
+            "source_tokens": 527,
+            "chunk_count": 2,
+            "average_chunk_tokens": 295.5,
+            "maximum_chunk_tokens": 344,
+            "minimum_chunk_tokens": 247,
+            "average_overlap_tokens": 64,
+            "maximum_overlap_tokens": 64,
+            "minimum_overlap_tokens": 64,
+            "zero_overlap_pairs": 0,
+            "adjacent_overlaps": [
+                {
+                    "previous_chunk": 0,
+                    "current_chunk": 1,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 300
+                }
+            ],
+            "semantic_boundaries": {
+                "total_chunk_boundaries": 1,
+                "paragraph_boundary_endings": 1,
+                "sentence_boundary_endings": 0,
+                "mid_sentence_endings": 0,
+                "boundary_preservation_rate": 100.0
+            },
+            "token_budget": 448,
+            "execution_seconds": 0.0082,
+            "coverage_complete": true,
+            "passed": true,
+            "violations": []
+        },
+        {
+            "document": "doc_03_short_paragraphs.txt",
+            "source_characters": 1676,
+            "source_tokens": 328,
+            "chunk_count": 1,
+            "average_chunk_tokens": 328,
+            "maximum_chunk_tokens": 328,
+            "minimum_chunk_tokens": 328,
+            "average_overlap_tokens": 0,
+            "maximum_overlap_tokens": 0,
+            "minimum_overlap_tokens": 0,
+            "zero_overlap_pairs": 0,
+            "adjacent_overlaps": [],
+            "semantic_boundaries": {
+                "total_chunk_boundaries": 0,
+                "paragraph_boundary_endings": 0,
+                "sentence_boundary_endings": 0,
+                "mid_sentence_endings": 0,
+                "boundary_preservation_rate": null
+            },
+            "token_budget": 448,
+            "execution_seconds": 0.0143,
+            "coverage_complete": true,
+            "passed": true,
+            "violations": []
+        },
+        {
+            "document": "doc_04_headings.txt",
+            "source_characters": 3014,
+            "source_tokens": 616,
+            "chunk_count": 2,
+            "average_chunk_tokens": 340,
+            "maximum_chunk_tokens": 390,
+            "minimum_chunk_tokens": 290,
+            "average_overlap_tokens": 64,
+            "maximum_overlap_tokens": 64,
+            "minimum_overlap_tokens": 64,
+            "zero_overlap_pairs": 0,
+            "adjacent_overlaps": [
+                {
+                    "previous_chunk": 0,
+                    "current_chunk": 1,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 309
+                }
+            ],
+            "semantic_boundaries": {
+                "total_chunk_boundaries": 1,
+                "paragraph_boundary_endings": 1,
+                "sentence_boundary_endings": 0,
+                "mid_sentence_endings": 0,
+                "boundary_preservation_rate": 100.0
+            },
+            "token_budget": 448,
+            "execution_seconds": 0.0132,
+            "coverage_complete": true,
+            "passed": true,
+            "violations": []
+        },
+        {
+            "document": "doc_05_long_sentences.txt",
+            "source_characters": 1674,
+            "source_tokens": 325,
+            "chunk_count": 1,
+            "average_chunk_tokens": 325,
+            "maximum_chunk_tokens": 325,
+            "minimum_chunk_tokens": 325,
+            "average_overlap_tokens": 0,
+            "maximum_overlap_tokens": 0,
+            "minimum_overlap_tokens": 0,
+            "zero_overlap_pairs": 0,
+            "adjacent_overlaps": [],
+            "semantic_boundaries": {
+                "total_chunk_boundaries": 0,
+                "paragraph_boundary_endings": 0,
+                "sentence_boundary_endings": 0,
+                "mid_sentence_endings": 0,
+                "boundary_preservation_rate": null
+            },
+            "token_budget": 448,
+            "execution_seconds": 0.0066,
+            "coverage_complete": true,
+            "passed": true,
+            "violations": []
+        },
+        {
+            "document": "doc_06_lists_tables.txt",
+            "source_characters": 2006,
+            "source_tokens": 512,
+            "chunk_count": 2,
+            "average_chunk_tokens": 288,
+            "maximum_chunk_tokens": 416,
+            "minimum_chunk_tokens": 160,
+            "average_overlap_tokens": 64,
+            "maximum_overlap_tokens": 64,
+            "minimum_overlap_tokens": 64,
+            "zero_overlap_pairs": 0,
+            "adjacent_overlaps": [
+                {
+                    "previous_chunk": 0,
+                    "current_chunk": 1,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 284
+                }
+            ],
+            "semantic_boundaries": {
+                "total_chunk_boundaries": 1,
+                "paragraph_boundary_endings": 1,
+                "sentence_boundary_endings": 0,
+                "mid_sentence_endings": 0,
+                "boundary_preservation_rate": 100.0
+            },
+            "token_budget": 448,
+            "execution_seconds": 0.0081,
+            "coverage_complete": true,
+            "passed": true,
+            "violations": []
+        },
+        {
+            "document": "doc_07_malayalam.txt",
+            "source_characters": 1703,
+            "source_tokens": 478,
+            "chunk_count": 2,
+            "average_chunk_tokens": 271,
+            "maximum_chunk_tokens": 397,
+            "minimum_chunk_tokens": 145,
+            "average_overlap_tokens": 64,
+            "maximum_overlap_tokens": 64,
+            "minimum_overlap_tokens": 64,
+            "zero_overlap_pairs": 0,
+            "adjacent_overlaps": [
+                {
+                    "previous_chunk": 0,
+                    "current_chunk": 1,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 240
+                }
+            ],
+            "semantic_boundaries": {
+                "total_chunk_boundaries": 1,
+                "paragraph_boundary_endings": 1,
+                "sentence_boundary_endings": 0,
+                "mid_sentence_endings": 0,
+                "boundary_preservation_rate": 100.0
+            },
+            "token_budget": 448,
+            "execution_seconds": 0.0078,
+            "coverage_complete": true,
+            "passed": true,
+            "violations": []
+        },
+        {
+            "document": "doc_08_mixed_language.txt",
+            "source_characters": 1481,
+            "source_tokens": 375,
+            "chunk_count": 1,
+            "average_chunk_tokens": 375,
+            "maximum_chunk_tokens": 375,
+            "minimum_chunk_tokens": 375,
+            "average_overlap_tokens": 0,
+            "maximum_overlap_tokens": 0,
+            "minimum_overlap_tokens": 0,
+            "zero_overlap_pairs": 0,
+            "adjacent_overlaps": [],
+            "semantic_boundaries": {
+                "total_chunk_boundaries": 0,
+                "paragraph_boundary_endings": 0,
+                "sentence_boundary_endings": 0,
+                "mid_sentence_endings": 0,
+                "boundary_preservation_rate": null
+            },
+            "token_budget": 448,
+            "execution_seconds": 0.0076,
+            "coverage_complete": true,
+            "passed": true,
+            "violations": []
+        },
+        {
+            "document": "doc_09_unicode.txt",
+            "source_characters": 1319,
+            "source_tokens": 418,
+            "chunk_count": 1,
+            "average_chunk_tokens": 418,
+            "maximum_chunk_tokens": 418,
+            "minimum_chunk_tokens": 418,
+            "average_overlap_tokens": 0,
+            "maximum_overlap_tokens": 0,
+            "minimum_overlap_tokens": 0,
+            "zero_overlap_pairs": 0,
+            "adjacent_overlaps": [],
+            "semantic_boundaries": {
+                "total_chunk_boundaries": 0,
+                "paragraph_boundary_endings": 0,
+                "sentence_boundary_endings": 0,
+                "mid_sentence_endings": 0,
+                "boundary_preservation_rate": null
+            },
+            "token_budget": 448,
+            "execution_seconds": 0.0063,
+            "coverage_complete": true,
+            "passed": true,
+            "violations": []
+        },
+        {
+            "document": "doc_10_large_technical.txt",
+            "source_characters": 103719,
+            "source_tokens": 20705,
+            "chunk_count": 57,
+            "average_chunk_tokens": 426.35,
+            "maximum_chunk_tokens": 448,
+            "minimum_chunk_tokens": 91,
+            "average_overlap_tokens": 64.23,
+            "maximum_overlap_tokens": 65,
+            "minimum_overlap_tokens": 64,
+            "zero_overlap_pairs": 0,
+            "adjacent_overlaps": [
+                {
+                    "previous_chunk": 0,
+                    "current_chunk": 1,
+                    "overlap_tokens": 65,
+                    "overlap_characters": 314
+                },
+                {
+                    "previous_chunk": 1,
+                    "current_chunk": 2,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 2,
+                    "current_chunk": 3,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 3,
+                    "current_chunk": 4,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 4,
+                    "current_chunk": 5,
+                    "overlap_tokens": 65,
+                    "overlap_characters": 293
+                },
+                {
+                    "previous_chunk": 5,
+                    "current_chunk": 6,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 6,
+                    "current_chunk": 7,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 7,
+                    "current_chunk": 8,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 8,
+                    "current_chunk": 9,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 343
+                },
+                {
+                    "previous_chunk": 9,
+                    "current_chunk": 10,
+                    "overlap_tokens": 65,
+                    "overlap_characters": 315
+                },
+                {
+                    "previous_chunk": 10,
+                    "current_chunk": 11,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 11,
+                    "current_chunk": 12,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 12,
+                    "current_chunk": 13,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 13,
+                    "current_chunk": 14,
+                    "overlap_tokens": 65,
+                    "overlap_characters": 293
+                },
+                {
+                    "previous_chunk": 14,
+                    "current_chunk": 15,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 15,
+                    "current_chunk": 16,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 16,
+                    "current_chunk": 17,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 17,
+                    "current_chunk": 18,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 343
+                },
+                {
+                    "previous_chunk": 18,
+                    "current_chunk": 19,
+                    "overlap_tokens": 65,
+                    "overlap_characters": 315
+                },
+                {
+                    "previous_chunk": 19,
+                    "current_chunk": 20,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 20,
+                    "current_chunk": 21,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 21,
+                    "current_chunk": 22,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 22,
+                    "current_chunk": 23,
+                    "overlap_tokens": 65,
+                    "overlap_characters": 293
+                },
+                {
+                    "previous_chunk": 23,
+                    "current_chunk": 24,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 24,
+                    "current_chunk": 25,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 25,
+                    "current_chunk": 26,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 26,
+                    "current_chunk": 27,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 343
+                },
+                {
+                    "previous_chunk": 27,
+                    "current_chunk": 28,
+                    "overlap_tokens": 65,
+                    "overlap_characters": 315
+                },
+                {
+                    "previous_chunk": 28,
+                    "current_chunk": 29,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 29,
+                    "current_chunk": 30,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 30,
+                    "current_chunk": 31,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 31,
+                    "current_chunk": 32,
+                    "overlap_tokens": 65,
+                    "overlap_characters": 293
+                },
+                {
+                    "previous_chunk": 32,
+                    "current_chunk": 33,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 33,
+                    "current_chunk": 34,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 34,
+                    "current_chunk": 35,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 35,
+                    "current_chunk": 36,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 343
+                },
+                {
+                    "previous_chunk": 36,
+                    "current_chunk": 37,
+                    "overlap_tokens": 65,
+                    "overlap_characters": 315
+                },
+                {
+                    "previous_chunk": 37,
+                    "current_chunk": 38,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 38,
+                    "current_chunk": 39,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 39,
+                    "current_chunk": 40,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 40,
+                    "current_chunk": 41,
+                    "overlap_tokens": 65,
+                    "overlap_characters": 293
+                },
+                {
+                    "previous_chunk": 41,
+                    "current_chunk": 42,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 42,
+                    "current_chunk": 43,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 43,
+                    "current_chunk": 44,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 44,
+                    "current_chunk": 45,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 343
+                },
+                {
+                    "previous_chunk": 45,
+                    "current_chunk": 46,
+                    "overlap_tokens": 65,
+                    "overlap_characters": 315
+                },
+                {
+                    "previous_chunk": 46,
+                    "current_chunk": 47,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 47,
+                    "current_chunk": 48,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 48,
+                    "current_chunk": 49,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 49,
+                    "current_chunk": 50,
+                    "overlap_tokens": 65,
+                    "overlap_characters": 293
+                },
+                {
+                    "previous_chunk": 50,
+                    "current_chunk": 51,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 51,
+                    "current_chunk": 52,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 52,
+                    "current_chunk": 53,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                },
+                {
+                    "previous_chunk": 53,
+                    "current_chunk": 54,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 343
+                },
+                {
+                    "previous_chunk": 54,
+                    "current_chunk": 55,
+                    "overlap_tokens": 65,
+                    "overlap_characters": 315
+                },
+                {
+                    "previous_chunk": 55,
+                    "current_chunk": 56,
+                    "overlap_tokens": 64,
+                    "overlap_characters": 325
+                }
+            ],
+            "semantic_boundaries": {
+                "total_chunk_boundaries": 56,
+                "paragraph_boundary_endings": 56,
+                "sentence_boundary_endings": 0,
+                "mid_sentence_endings": 0,
+                "boundary_preservation_rate": 100.0
+            },
+            "token_budget": 448,
+            "execution_seconds": 0.5319,
+            "coverage_complete": true,
+            "passed": true,
+            "violations": []
+        }
+    ]
+}

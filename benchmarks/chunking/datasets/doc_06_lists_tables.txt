@@ -1,0 +1,62 @@
+# Production AI Platform Components
+
+## Core Components
+
+1. API Layer
+   - Handles HTTP requests.
+   - Validates request data.
+   - Enforces authentication and authorization.
+
+2. Document Processing
+   - Extracts text from uploaded files.
+   - Normalizes extracted content.
+   - Generates token-bounded chunks.
+
+3. Storage Layer
+   - Stores document metadata in PostgreSQL.
+   - Stores original files in object storage.
+   - Stores vector representations in Qdrant.
+
+4. Model Layer
+   - Generates embeddings.
+   - Retrieves relevant document chunks.
+   - Uses an LLM to generate responses.
+
+## Component Responsibilities
+
+| Component | Responsibility | Technology |
+|---|---|---|
+| API | Request handling | FastAPI |
+| Metadata | Relational persistence | PostgreSQL |
+| Vector search | Similarity retrieval | Qdrant |
+| Embeddings | Text representation | Embedding model |
+| Generation | Response generation | LLM |
+| Deployment | Container orchestration | Docker Compose |
+
+## Operational Requirements
+
+- Authentication must protect user resources.
+- Authorization must enforce document ownership.
+- Input validation must reject unsupported files.
+- Rate limiting must protect expensive endpoints.
+- Background workers must process documents reliably.
+- Retry policies must handle transient failures.
+- Logging must support debugging and auditing.
+- Metrics must expose latency and processing throughput.
+- Monitoring must detect service degradation.
+- Database migrations must be version controlled.
+- Automated tests must verify critical behavior.
+- Deployment procedures must support rollback.
+
+## Processing Sequence
+
+1. A user uploads a document.
+2. The API validates the request.
+3. The original file is stored.
+4. Document metadata is persisted.
+5. A worker claims the pending document.
+6. Text is extracted from the file.
+7. Extracted text is divided into chunks.
+8. Embeddings are generated for the chunks.
+9. Vectors and metadata are persisted.
+10. The document becomes available for retrieval.
