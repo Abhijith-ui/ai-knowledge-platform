@@ -18,7 +18,6 @@ def make_chunk(
     end: int,
 ) -> DocumentChunk:
     """Create a chunk covering a source-text interval."""
-
     return DocumentChunk(
         chunk_index=chunk_index,
         content=source[start:end],
@@ -113,7 +112,6 @@ def test_duplicate_headings_use_the_correct_ancestor() -> None:
     )
 
     sections = analyze_markdown_headings(source)
-
     second_details = sections[-1]
 
     # Include the second Details heading and its content,
@@ -170,11 +168,7 @@ def test_chunk_spanning_multiple_sections_creates_multiple_relationships() -> No
 
 
 def test_section_spanning_multiple_chunks_creates_multiple_relationships() -> None:
-    source = (
-        "# Root\n"
-        "First part of the section.\n"
-        "Second part of the section.\n"
-    )
+    source = "# Root\n" "First part of the section.\n" "Second part of the section.\n"
     sections = analyze_markdown_headings(source)
 
     split_position = source.index("Second part")
@@ -207,8 +201,7 @@ def test_duplicate_heading_titles_keep_distinct_section_ids() -> None:
     result = evaluate_chunk_section_relationships(sections, chunks)
 
     overview_sections = [
-        item for item in result.per_section
-        if item.section_path == ("Root", "Overview")
+        item for item in result.per_section if item.section_path == ("Root", "Overview")
     ]
 
     assert len(overview_sections) == 2
@@ -218,11 +211,7 @@ def test_duplicate_heading_titles_keep_distinct_section_ids() -> None:
 
 
 def test_sections_without_content_overlap_have_zero_associations() -> None:
-    source = (
-        "Text before the heading.\n"
-        "# Heading\n"
-        "Section content.\n"
-    )
+    source = "Text before the heading.\n" "# Heading\n" "Section content.\n"
     sections = analyze_markdown_headings(source)
 
     heading_position = source.index("# Heading")
@@ -253,3 +242,137 @@ def test_empty_chunks_return_empty_relationship_metrics() -> None:
     assert result.per_chunk == ()
     assert len(result.per_section) == 1
     assert result.per_section[0].chunk_count == 0
+
+
+def test_child_only_chunk_has_only_direct_child_relationship() -> None:
+    source = "# Root\n" "Root introduction.\n" "## Child\n" "Child content.\n"
+    sections = analyze_markdown_headings(source)
+    child = sections[1]
+
+    chunks = [
+        make_chunk(
+            source,
+            0,
+            child.heading_start,
+            len(source),
+        )
+    ]
+
+    result = evaluate_chunk_section_relationships(sections, chunks)
+
+    # Hierarchical relationships include Root and Child.
+    assert result.total_relationships == 2
+    assert result.per_chunk[0].section_count == 2
+
+    # Direct relationship belongs only to Child.
+    assert result.direct_total_relationships == 1
+    assert result.direct_per_chunk[0].section_count == 1
+    assert result.direct_per_section[0].chunk_count == 0
+    assert result.direct_per_section[1].chunk_count == 1
+
+
+def test_parent_content_before_child_has_direct_parent_relationship() -> None:
+    source = "# Root\n" "Root introduction.\n" "## Child\n" "Child content.\n"
+    sections = analyze_markdown_headings(source)
+
+    child_heading_start = sections[1].heading_start
+
+    chunks = [
+        make_chunk(
+            source,
+            0,
+            sections[0].content_start,
+            child_heading_start,
+        )
+    ]
+
+    result = evaluate_chunk_section_relationships(sections, chunks)
+
+    assert result.total_relationships == 1
+    assert result.direct_total_relationships == 1
+
+    assert result.per_chunk[0].section_count == 1
+    assert result.direct_per_chunk[0].section_count == 1
+
+    assert result.direct_per_section[0].chunk_count == 1
+    assert result.direct_per_section[1].chunk_count == 0
+
+
+def test_chunk_spanning_sibling_sections_has_three_direct_relationships() -> None:
+    source = (
+        "# Root\n"
+        "Root introduction.\n"
+        "## First\n"
+        "First section content.\n"
+        "## Second\n"
+        "Second section content.\n"
+    )
+    sections = analyze_markdown_headings(source)
+
+    chunks = [make_chunk(source, 0, 0, len(source))]
+
+    result = evaluate_chunk_section_relationships(sections, chunks)
+
+    # Hierarchical: Root, First, Second.
+    assert result.total_relationships == 3
+    assert result.per_chunk[0].section_count == 3
+
+    # Direct: Root introduction, First, Second.
+    assert result.direct_total_relationships == 3
+    assert result.direct_per_chunk[0].section_count == 3
+    assert result.direct_chunks_with_multiple_sections == 1
+    assert result.direct_multi_section_chunk_percentage == 100.0
+    assert result.direct_average_sections_per_chunk == 3.0
+
+
+def test_parent_without_direct_content_has_zero_direct_associations() -> None:
+    source = "# Root\n" "## Child\n" "Child content.\n"
+    sections = analyze_markdown_headings(source)
+
+    chunks = [make_chunk(source, 0, 0, len(source))]
+
+    result = evaluate_chunk_section_relationships(sections, chunks)
+
+    # Parent range includes child content hierarchically.
+    assert result.total_relationships == 2
+
+    # Parent has no directly owned body content.
+    assert result.direct_total_relationships == 1
+    assert result.direct_per_section[0].chunk_count == 0
+    assert result.direct_per_section[1].chunk_count == 1
+
+
+def test_section_split_across_chunks_preserves_direct_relationships() -> None:
+    source = (
+        "# Root\n"
+        "## Child\n"
+        "First part of child content.\n"
+        "Second part of child content.\n"
+    )
+    sections = analyze_markdown_headings(source)
+
+    split_position = source.index("Second part")
+
+    chunks = [
+        make_chunk(
+            source,
+            0,
+            sections[1].heading_start,
+            split_position,
+        ),
+        make_chunk(
+            source,
+            1,
+            split_position,
+            len(source),
+        ),
+    ]
+
+    result = evaluate_chunk_section_relationships(sections, chunks)
+
+    assert result.direct_total_relationships == 2
+    assert result.direct_per_section[0].chunk_count == 0
+    assert result.direct_per_section[1].chunk_count == 2
+
+    assert result.direct_per_chunk[0].section_count == 1
+    assert result.direct_per_chunk[1].section_count == 1

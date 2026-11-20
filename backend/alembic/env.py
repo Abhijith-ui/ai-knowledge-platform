@@ -2,17 +2,16 @@ import sys
 from logging.config import fileConfig
 from pathlib import Path
 
-from ai_knowledge_platform.models.document_content import DocumentContent  # noqa: F401
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 
+# Add backend/src to Python's import path.
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
+from ai_knowledge_platform import models  # noqa: F401
 from ai_knowledge_platform.core.config import get_settings
 from ai_knowledge_platform.db.base import Base
-from ai_knowledge_platform.models.document import Document  # noqa: F401
-from ai_knowledge_platform.models.user import User  # noqa: F401
-from ai_knowledge_platform.models.user_credential import UserCredential  # noqa: F401
+
 
 # Alembic Config object.
 config = context.config

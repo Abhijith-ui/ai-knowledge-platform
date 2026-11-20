@@ -16,11 +16,24 @@
     "total_section_occurrences": 252,
     "section_heading_coverage": 53.17,
     "full_heading_path_coverage": 7.94,
-    "total_chunk_section_relationships": 252,
-    "chunks_spanning_multiple_sections": 61,
-    "multi_section_chunk_percentage": 87.14,
-    "average_sections_per_chunk": 3.6,
-    "heading_presence_percentage": 53.17
+    "hierarchical_relationships": {
+      "total_relationships": 252,
+      "heading_matches": 134,
+      "heading_presence_percentage": 53.17,
+      "chunks_spanning_multiple_sections": 61,
+      "multi_section_chunk_percentage": 87.14,
+      "average_sections_per_chunk": 3.6
+    },
+    "direct_relationships": {
+      "total_relationships": 191,
+      "heading_matches": 131,
+      "full_path_matches": 17,
+      "heading_presence_percentage": 68.59,
+      "full_heading_path_presence_percentage": 8.9,
+      "chunks_spanning_multiple_sections": 60,
+      "multi_section_chunk_percentage": 85.71,
+      "average_sections_per_chunk": 2.73
+    }
   },
   "skipped_documents": [],
   "documents": [
@@ -36,11 +49,36 @@
       "full_heading_path_coverage": 100.0,
       "relationships": {
         "total_relationships": 1,
-        "heading_matches": 1.0,
+        "heading_matches": 1,
         "chunks_with_multiple_sections": 0,
         "multi_section_chunk_percentage": 0.0,
         "average_sections_per_chunk": 1.0,
         "heading_presence_percentage": 100.0,
+        "per_chunk": [
+          {
+            "chunk_index": 0,
+            "section_count": 1
+          }
+        ],
+        "per_section": [
+          {
+            "section_id": 0,
+            "section_path": [
+              "Introduction to Machine Learning"
+            ],
+            "chunk_count": 1
+          }
+        ]
+      },
+      "direct_relationships": {
+        "total_relationships": 1,
+        "heading_matches": 1,
+        "full_path_matches": 1,
+        "chunks_with_multiple_sections": 0,
+        "multi_section_chunk_percentage": 0.0,
+        "average_sections_per_chunk": 1.0,
+        "heading_presence_percentage": 100.0,
+        "full_heading_path_presence_percentage": 100.0,
         "per_chunk": [
           {
             "chunk_index": 0,
@@ -88,11 +126,40 @@
       "full_heading_path_coverage": 50.0,
       "relationships": {
         "total_relationships": 2,
-        "heading_matches": 1.0,
+        "heading_matches": 1,
         "chunks_with_multiple_sections": 0,
         "multi_section_chunk_percentage": 0.0,
         "average_sections_per_chunk": 1.0,
         "heading_presence_percentage": 50.0,
+        "per_chunk": [
+          {
+            "chunk_index": 0,
+            "section_count": 1
+          },
+          {
+            "chunk_index": 1,
+            "section_count": 1
+          }
+        ],
+        "per_section": [
+          {
+            "section_id": 0,
+            "section_path": [
+              "Building Reliable Machine Learning Systems"
+            ],
+            "chunk_count": 2
+          }
+        ]
+      },
+      "direct_relationships": {
+        "total_relationships": 2,
+        "heading_matches": 1,
+        "full_path_matches": 1,
+        "chunks_with_multiple_sections": 0,
+        "multi_section_chunk_percentage": 0.0,
+        "average_sections_per_chunk": 1.0,
+        "heading_presence_percentage": 50.0,
+        "full_heading_path_presence_percentage": 50.0,
         "per_chunk": [
           {
             "chunk_index": 0,
@@ -158,11 +225,36 @@
       "full_heading_path_coverage": 100.0,
       "relationships": {
         "total_relationships": 1,
-        "heading_matches": 1.0,
+        "heading_matches": 1,
         "chunks_with_multiple_sections": 0,
         "multi_section_chunk_percentage": 0.0,
         "average_sections_per_chunk": 1.0,
         "heading_presence_percentage": 100.0,
+        "per_chunk": [
+          {
+            "chunk_index": 0,
+            "section_count": 1
+          }
+        ],
+        "per_section": [
+          {
+            "section_id": 0,
+            "section_path": [
+              "Machine Learning Engineering Notes"
+            ],
+            "chunk_count": 1
+          }
+        ]
+      },
+      "direct_relationships": {
+        "total_relationships": 1,
+        "heading_matches": 1,
+        "full_path_matches": 1,
+        "chunks_with_multiple_sections": 0,
+        "multi_section_chunk_percentage": 0.0,
+        "average_sections_per_chunk": 1.0,
+        "heading_presence_percentage": 100.0,
+        "full_heading_path_presence_percentage": 100.0,
         "per_chunk": [
           {
             "chunk_index": 0,
@@ -210,7 +302,7 @@
       "full_heading_path_coverage": 54.55,
       "relationships": {
         "total_relationships": 11,
-        "heading_matches": 9.0,
+        "heading_matches": 9,
         "chunks_with_multiple_sections": 2,
         "multi_section_chunk_percentage": 100.0,
         "average_sections_per_chunk": 5.5,
@@ -232,6 +324,99 @@
               "Production Machine Learning Architecture"
             ],
             "chunk_count": 2
+          },
+          {
+            "section_id": 1,
+            "section_path": [
+              "Production Machine Learning Architecture",
+              "1. Data Ingestion"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 2,
+            "section_path": [
+              "Production Machine Learning Architecture",
+              "2. Data Validation"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 3,
+            "section_path": [
+              "Production Machine Learning Architecture",
+              "3. Feature Processing"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 4,
+            "section_path": [
+              "Production Machine Learning Architecture",
+              "4. Model Training"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 5,
+            "section_path": [
+              "Production Machine Learning Architecture",
+              "5. Model Evaluation"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 6,
+            "section_path": [
+              "Production Machine Learning Architecture",
+              "6. Model Serving"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 7,
+            "section_path": [
+              "Production Machine Learning Architecture",
+              "7. Monitoring and Maintenance"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 8,
+            "section_path": [
+              "Production Machine Learning Architecture",
+              "8. Security and Governance"
+            ],
+            "chunk_count": 1
+          }
+        ]
+      },
+      "direct_relationships": {
+        "total_relationships": 9,
+        "heading_matches": 8,
+        "full_path_matches": 5,
+        "chunks_with_multiple_sections": 2,
+        "multi_section_chunk_percentage": 100.0,
+        "average_sections_per_chunk": 4.5,
+        "heading_presence_percentage": 88.89,
+        "full_heading_path_presence_percentage": 55.56,
+        "per_chunk": [
+          {
+            "chunk_index": 0,
+            "section_count": 5
+          },
+          {
+            "chunk_index": 1,
+            "section_count": 4
+          }
+        ],
+        "per_section": [
+          {
+            "section_id": 0,
+            "section_path": [
+              "Production Machine Learning Architecture"
+            ],
+            "chunk_count": 0
           },
           {
             "section_id": 1,
@@ -425,11 +610,36 @@
       "full_heading_path_coverage": 100.0,
       "relationships": {
         "total_relationships": 1,
-        "heading_matches": 1.0,
+        "heading_matches": 1,
         "chunks_with_multiple_sections": 0,
         "multi_section_chunk_percentage": 0.0,
         "average_sections_per_chunk": 1.0,
         "heading_presence_percentage": 100.0,
+        "per_chunk": [
+          {
+            "chunk_index": 0,
+            "section_count": 1
+          }
+        ],
+        "per_section": [
+          {
+            "section_id": 0,
+            "section_path": [
+              "Long Sentence Stress Test"
+            ],
+            "chunk_count": 1
+          }
+        ]
+      },
+      "direct_relationships": {
+        "total_relationships": 1,
+        "heading_matches": 1,
+        "full_path_matches": 1,
+        "chunks_with_multiple_sections": 0,
+        "multi_section_chunk_percentage": 0.0,
+        "average_sections_per_chunk": 1.0,
+        "heading_presence_percentage": 100.0,
+        "full_heading_path_presence_percentage": 100.0,
         "per_chunk": [
           {
             "chunk_index": 0,
@@ -477,7 +687,7 @@
       "full_heading_path_coverage": 57.14,
       "relationships": {
         "total_relationships": 7,
-        "heading_matches": 5.0,
+        "heading_matches": 5,
         "chunks_with_multiple_sections": 2,
         "multi_section_chunk_percentage": 100.0,
         "average_sections_per_chunk": 3.5,
@@ -499,6 +709,67 @@
               "Production AI Platform Components"
             ],
             "chunk_count": 2
+          },
+          {
+            "section_id": 1,
+            "section_path": [
+              "Production AI Platform Components",
+              "Core Components"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 2,
+            "section_path": [
+              "Production AI Platform Components",
+              "Component Responsibilities"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 3,
+            "section_path": [
+              "Production AI Platform Components",
+              "Operational Requirements"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 4,
+            "section_path": [
+              "Production AI Platform Components",
+              "Processing Sequence"
+            ],
+            "chunk_count": 1
+          }
+        ]
+      },
+      "direct_relationships": {
+        "total_relationships": 5,
+        "heading_matches": 4,
+        "full_path_matches": 3,
+        "chunks_with_multiple_sections": 2,
+        "multi_section_chunk_percentage": 100.0,
+        "average_sections_per_chunk": 2.5,
+        "heading_presence_percentage": 80.0,
+        "full_heading_path_presence_percentage": 60.0,
+        "per_chunk": [
+          {
+            "chunk_index": 0,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 1,
+            "section_count": 2
+          }
+        ],
+        "per_section": [
+          {
+            "section_id": 0,
+            "section_path": [
+              "Production AI Platform Components"
+            ],
+            "chunk_count": 0
           },
           {
             "section_id": 1,
@@ -624,11 +895,40 @@
       "full_heading_path_coverage": 50.0,
       "relationships": {
         "total_relationships": 2,
-        "heading_matches": 1.0,
+        "heading_matches": 1,
         "chunks_with_multiple_sections": 0,
         "multi_section_chunk_percentage": 0.0,
         "average_sections_per_chunk": 1.0,
         "heading_presence_percentage": 50.0,
+        "per_chunk": [
+          {
+            "chunk_index": 0,
+            "section_count": 1
+          },
+          {
+            "chunk_index": 1,
+            "section_count": 1
+          }
+        ],
+        "per_section": [
+          {
+            "section_id": 0,
+            "section_path": [
+              "മെഷീൻ ലേണിംഗും ആർട്ടിഫിഷ്യൽ ഇന്റലിജൻസും"
+            ],
+            "chunk_count": 2
+          }
+        ]
+      },
+      "direct_relationships": {
+        "total_relationships": 2,
+        "heading_matches": 1,
+        "full_path_matches": 1,
+        "chunks_with_multiple_sections": 0,
+        "multi_section_chunk_percentage": 0.0,
+        "average_sections_per_chunk": 1.0,
+        "heading_presence_percentage": 50.0,
+        "full_heading_path_presence_percentage": 50.0,
         "per_chunk": [
           {
             "chunk_index": 0,
@@ -694,11 +994,36 @@
       "full_heading_path_coverage": 100.0,
       "relationships": {
         "total_relationships": 1,
-        "heading_matches": 1.0,
+        "heading_matches": 1,
         "chunks_with_multiple_sections": 0,
         "multi_section_chunk_percentage": 0.0,
         "average_sections_per_chunk": 1.0,
         "heading_presence_percentage": 100.0,
+        "per_chunk": [
+          {
+            "chunk_index": 0,
+            "section_count": 1
+          }
+        ],
+        "per_section": [
+          {
+            "section_id": 0,
+            "section_path": [
+              "Building Machine Learning Systems / മെഷീൻ ലേണിംഗ് സിസ്റ്റങ്ങൾ"
+            ],
+            "chunk_count": 1
+          }
+        ]
+      },
+      "direct_relationships": {
+        "total_relationships": 1,
+        "heading_matches": 1,
+        "full_path_matches": 1,
+        "chunks_with_multiple_sections": 0,
+        "multi_section_chunk_percentage": 0.0,
+        "average_sections_per_chunk": 1.0,
+        "heading_presence_percentage": 100.0,
+        "full_heading_path_presence_percentage": 100.0,
         "per_chunk": [
           {
             "chunk_index": 0,
@@ -746,11 +1071,36 @@
       "full_heading_path_coverage": 100.0,
       "relationships": {
         "total_relationships": 1,
-        "heading_matches": 1.0,
+        "heading_matches": 1,
         "chunks_with_multiple_sections": 0,
         "multi_section_chunk_percentage": 0.0,
         "average_sections_per_chunk": 1.0,
         "heading_presence_percentage": 100.0,
+        "per_chunk": [
+          {
+            "chunk_index": 0,
+            "section_count": 1
+          }
+        ],
+        "per_section": [
+          {
+            "section_id": 0,
+            "section_path": [
+              "Unicode and Text Processing Stress Test"
+            ],
+            "chunk_count": 1
+          }
+        ]
+      },
+      "direct_relationships": {
+        "total_relationships": 1,
+        "heading_matches": 1,
+        "full_path_matches": 1,
+        "chunks_with_multiple_sections": 0,
+        "multi_section_chunk_percentage": 0.0,
+        "average_sections_per_chunk": 1.0,
+        "heading_presence_percentage": 100.0,
+        "full_heading_path_presence_percentage": 100.0,
         "per_chunk": [
           {
             "chunk_index": 0,
@@ -798,7 +1148,7 @@
       "full_heading_path_coverage": 1.33,
       "relationships": {
         "total_relationships": 225,
-        "heading_matches": 113.0,
+        "heading_matches": 113,
         "chunks_with_multiple_sections": 57,
         "multi_section_chunk_percentage": 100.0,
         "average_sections_per_chunk": 3.95,
@@ -1040,6 +1390,1055 @@
               "Large Technical Document"
             ],
             "chunk_count": 57
+          },
+          {
+            "section_id": 1,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 1"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 2,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 2"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 3,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 3"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 4,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 4"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 5,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 5"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 6,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 6"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 7,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 7"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 8,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 8"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 9,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 9"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 10,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 10"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 11,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 11"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 12,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 12"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 13,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 13"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 14,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 14"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 15,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 15"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 16,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 16"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 17,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 17"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 18,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 18"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 19,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 19"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 20,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 20"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 21,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 21"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 22,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 22"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 23,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 23"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 24,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 24"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 25,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 25"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 26,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 26"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 27,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 27"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 28,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 28"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 29,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 29"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 30,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 30"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 31,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 31"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 32,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 32"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 33,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 33"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 34,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 34"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 35,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 35"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 36,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 36"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 37,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 37"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 38,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 38"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 39,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 39"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 40,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 40"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 41,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 41"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 42,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 42"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 43,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 43"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 44,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 44"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 45,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 45"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 46,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 46"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 47,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 47"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 48,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 48"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 49,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 49"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 50,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 50"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 51,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 51"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 52,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 52"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 53,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 53"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 54,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 54"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 55,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 55"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 56,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 56"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 57,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 57"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 58,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 58"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 59,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 59"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 60,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 60"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 61,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 61"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 62,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 62"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 63,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 63"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 64,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 64"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 65,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 65"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 66,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 66"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 67,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 67"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 68,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 68"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 69,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 69"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 70,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 70"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 71,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 71"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 72,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 72"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 73,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 73"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 74,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 74"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 75,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 75"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 76,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 76"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 77,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 77"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 78,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 78"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 79,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 79"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 80,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 80"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 81,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 81"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 82,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 82"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 83,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 83"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 84,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 84"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 85,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 85"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 86,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 86"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 87,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 87"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 88,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 88"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 89,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 89"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 90,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 90"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 91,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 91"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 92,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 92"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 93,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 93"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 94,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 94"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 95,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 95"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 96,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 96"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 97,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 97"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 98,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 98"
+            ],
+            "chunk_count": 2
+          },
+          {
+            "section_id": 99,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 99"
+            ],
+            "chunk_count": 1
+          },
+          {
+            "section_id": 100,
+            "section_path": [
+              "Large Technical Document",
+              "Technical Section 100"
+            ],
+            "chunk_count": 2
+          }
+        ]
+      },
+      "direct_relationships": {
+        "total_relationships": 168,
+        "heading_matches": 112,
+        "full_path_matches": 2,
+        "chunks_with_multiple_sections": 56,
+        "multi_section_chunk_percentage": 98.25,
+        "average_sections_per_chunk": 2.95,
+        "heading_presence_percentage": 66.67,
+        "full_heading_path_presence_percentage": 1.19,
+        "per_chunk": [
+          {
+            "chunk_index": 0,
+            "section_count": 2
+          },
+          {
+            "chunk_index": 1,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 2,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 3,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 4,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 5,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 6,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 7,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 8,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 9,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 10,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 11,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 12,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 13,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 14,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 15,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 16,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 17,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 18,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 19,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 20,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 21,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 22,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 23,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 24,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 25,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 26,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 27,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 28,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 29,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 30,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 31,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 32,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 33,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 34,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 35,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 36,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 37,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 38,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 39,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 40,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 41,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 42,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 43,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 44,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 45,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 46,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 47,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 48,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 49,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 50,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 51,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 52,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 53,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 54,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 55,
+            "section_count": 3
+          },
+          {
+            "chunk_index": 56,
+            "section_count": 1
+          }
+        ],
+        "per_section": [
+          {
+            "section_id": 0,
+            "section_path": [
+              "Large Technical Document"
+            ],
+            "chunk_count": 0
           },
           {
             "section_id": 1,

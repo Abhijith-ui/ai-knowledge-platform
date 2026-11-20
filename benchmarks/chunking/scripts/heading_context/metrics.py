@@ -1,4 +1,3 @@
-
 """Metrics for evaluating Markdown heading context in generated chunks."""
 
 from __future__ import annotations
@@ -84,7 +83,7 @@ def _heading_is_inside_chunk(
 ) -> bool:
     """Check whether a complete heading line is inside a chunk."""
 
-    return (
+    return bool(
         chunk.start_char <= section.heading_start
         and chunk.end_char >= section.heading_end
     )
@@ -95,9 +94,7 @@ def _get_sections_by_id(
 ) -> dict[int, MarkdownSection]:
     """Create a section lookup and validate section identifiers."""
 
-    sections_by_id = {
-        section.section_id: section for section in sections
-    }
+    sections_by_id = {section.section_id: section for section in sections}
 
     if len(sections_by_id) != len(sections):
         raise ValueError("Section IDs must be unique.")
@@ -122,9 +119,7 @@ def _get_ancestor_sections(
         parent = sections_by_id.get(parent_id)
 
         if parent is None:
-            raise ValueError(
-                f"Parent section ID {parent_id} does not exist."
-            )
+            raise ValueError(f"Parent section ID {parent_id} does not exist.")
 
         visited_ids.add(parent_id)
         ancestors.append(parent)
@@ -145,9 +140,7 @@ def _get_direct_content_intervals(
     """
 
     children = [
-        candidate
-        for candidate in sections
-        if candidate.parent_id == section.section_id
+        candidate for candidate in sections if candidate.parent_id == section.section_id
     ]
 
     children.sort(key=lambda child: child.heading_start)
@@ -173,11 +166,7 @@ def _get_direct_content_intervals(
     if cursor < section.content_end:
         intervals.append((cursor, section.content_end))
 
-    return tuple(
-        (start, end)
-        for start, end in intervals
-        if start < end
-    )
+    return tuple((start, end) for start, end in intervals if start < end)
 
 
 def _chunk_overlaps_content(
@@ -194,8 +183,7 @@ def _chunk_overlaps_content(
             continue
 
         overlapping_text = chunk.content[
-            overlap_start - chunk.start_char :
-            overlap_end - chunk.start_char
+            overlap_start - chunk.start_char : overlap_end - chunk.start_char
         ]
 
         if overlapping_text.strip():
@@ -242,22 +230,16 @@ def _calculate_relationship_summary(
 ) -> tuple[int, float | None, float | None, float | None]:
     """Calculate multi-section, average, and heading-presence metrics."""
 
-    multiple_section_chunks = sum(
-        item.section_count > 1 for item in per_chunk
-    )
+    multiple_section_chunks = sum(item.section_count > 1 for item in per_chunk)
 
     total_chunks = len(per_chunk)
 
     multi_section_percentage = (
-        round(multiple_section_chunks / total_chunks * 100, 2)
-        if total_chunks
-        else None
+        round(multiple_section_chunks / total_chunks * 100, 2) if total_chunks else None
     )
 
     average_sections = (
-        round(total_relationships / total_chunks, 2)
-        if total_chunks
-        else None
+        round(total_relationships / total_chunks, 2) if total_chunks else None
     )
 
     heading_presence = (
@@ -305,8 +287,7 @@ def evaluate_heading_context(
             )
 
             full_heading_path_present = section_heading_present and all(
-                _heading_is_inside_chunk(ancestor, chunk)
-                for ancestor in ancestors
+                _heading_is_inside_chunk(ancestor, chunk) for ancestor in ancestors
             )
 
             details.append(
@@ -320,25 +301,13 @@ def evaluate_heading_context(
 
     total = len(details)
 
-    section_matches = sum(
-        result.section_heading_present for result in details
-    )
+    section_matches = sum(result.section_heading_present for result in details)
 
-    full_path_matches = sum(
-        result.full_heading_path_present for result in details
-    )
+    full_path_matches = sum(result.full_heading_path_present for result in details)
 
-    section_coverage = (
-        round(section_matches / total * 100, 2)
-        if total
-        else None
-    )
+    section_coverage = round(section_matches / total * 100, 2) if total else None
 
-    full_path_coverage = (
-        round(full_path_matches / total * 100, 2)
-        if total
-        else None
-    )
+    full_path_coverage = round(full_path_matches / total * 100, 2) if total else None
 
     return HeadingContextMetrics(
         total_section_occurrences=total,
@@ -401,20 +370,14 @@ def evaluate_chunk_section_relationships(
     for chunk in chunks:
         for section in sections:
             # Hierarchical relationship.
-            hierarchical_intervals = (
-                (section.content_start, section.content_end),
-            )
+            hierarchical_intervals = ((section.content_start, section.content_end),)
 
             if _chunk_overlaps_content(
                 chunk,
                 hierarchical_intervals,
             ):
-                hierarchical_chunk_ids[chunk.chunk_index].add(
-                    section.section_id
-                )
-                hierarchical_section_ids[section.section_id].add(
-                    chunk.chunk_index
-                )
+                hierarchical_chunk_ids[chunk.chunk_index].add(section.section_id)
+                hierarchical_section_ids[section.section_id].add(chunk.chunk_index)
 
                 total_relationships += 1
 
@@ -428,12 +391,8 @@ def evaluate_chunk_section_relationships(
             ):
                 continue
 
-            direct_chunk_ids[chunk.chunk_index].add(
-                section.section_id
-            )
-            direct_section_ids[section.section_id].add(
-                chunk.chunk_index
-            )
+            direct_chunk_ids[chunk.chunk_index].add(section.section_id)
+            direct_section_ids[section.section_id].add(chunk.chunk_index)
 
             direct_total_relationships += 1
 
@@ -451,18 +410,15 @@ def evaluate_chunk_section_relationships(
             )
 
             if heading_present and all(
-                _heading_is_inside_chunk(ancestor, chunk)
-                for ancestor in ancestors
+                _heading_is_inside_chunk(ancestor, chunk) for ancestor in ancestors
             ):
                 direct_full_path_matches += 1
 
-    hierarchical_per_chunk, hierarchical_per_section = (
-        _build_relationship_counts(
-            chunks,
-            sections,
-            hierarchical_chunk_ids,
-            hierarchical_section_ids,
-        )
+    hierarchical_per_chunk, hierarchical_per_section = _build_relationship_counts(
+        chunks,
+        sections,
+        hierarchical_chunk_ids,
+        hierarchical_section_ids,
     )
 
     direct_per_chunk, direct_per_section = _build_relationship_counts(
@@ -515,12 +471,8 @@ def evaluate_chunk_section_relationships(
         direct_total_relationships=direct_total_relationships,
         direct_heading_matches=direct_heading_matches,
         direct_full_path_matches=direct_full_path_matches,
-        direct_chunks_with_multiple_sections=(
-            direct_chunks_with_multiple_sections
-        ),
-        direct_multi_section_chunk_percentage=(
-            direct_multi_section_percentage
-        ),
+        direct_chunks_with_multiple_sections=(direct_chunks_with_multiple_sections),
+        direct_multi_section_chunk_percentage=(direct_multi_section_percentage),
         direct_average_sections_per_chunk=direct_average_sections,
         direct_heading_presence_percentage=direct_heading_presence,
         direct_full_path_presence_percentage=direct_full_path_presence,
