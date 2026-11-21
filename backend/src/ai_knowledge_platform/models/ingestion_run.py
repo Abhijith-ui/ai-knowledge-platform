@@ -1,6 +1,12 @@
 import enum
 from datetime import UTC, datetime
+from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
+
+if TYPE_CHECKING:
+    from ai_knowledge_platform.models.document import Document
+    from ai_knowledge_platform.models.document_content import DocumentContent
+    from ai_knowledge_platform.models.ingestion_stage_run import IngestionStageRun
 
 from sqlalchemy import (
     CheckConstraint,
@@ -14,7 +20,7 @@ from sqlalchemy import (
     Uuid,
 )
 from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ai_knowledge_platform.db.base import Base
 
@@ -62,6 +68,11 @@ class IngestionRun(Base):
             "ix_ingestion_runs_status_created_at",
             "status",
             "created_at",
+        ),
+        UniqueConstraint(
+            "id",
+            "document_id",
+            name="uq_ingestion_runs_id_document_id",
         ),
     )
 
@@ -181,4 +192,20 @@ class IngestionRun(Base):
         nullable=False,
         default=lambda: datetime.now(UTC),
         onupdate=lambda: datetime.now(UTC),
+    )
+
+    document: Mapped["Document"] = relationship(
+        back_populates="ingestion_runs",
+        foreign_keys=[document_id],
+    )
+
+    content: Mapped["DocumentContent | None"] = relationship(
+        back_populates="ingestion_run",
+        cascade="all, delete-orphan",
+        uselist=False,
+    )
+
+    stage_runs: Mapped[list["IngestionStageRun"]] = relationship(
+        back_populates="ingestion_run",
+        cascade="all, delete-orphan",
     )

@@ -1,5 +1,6 @@
 import enum
 from datetime import UTC, datetime
+from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
 from sqlalchemy import (
@@ -13,8 +14,13 @@ from sqlalchemy import (
     UniqueConstraint,
     Uuid,
 )
+
+if TYPE_CHECKING:
+    from ai_knowledge_platform.models.ingestion_run import IngestionRun
+
+
 from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ai_knowledge_platform.db.base import Base
 from ai_knowledge_platform.models.ingestion_run import IngestionStage
@@ -127,4 +133,7 @@ class IngestionStageRun(Base):
         nullable=False,
         default=lambda: datetime.now(UTC),
         onupdate=lambda: datetime.now(UTC),
+    )
+    ingestion_run: Mapped["IngestionRun"] = relationship(
+        back_populates="stage_runs",
     )
