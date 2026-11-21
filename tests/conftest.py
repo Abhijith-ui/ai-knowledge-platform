@@ -8,10 +8,14 @@ from ai_knowledge_platform.models.user import User
 from ai_knowledge_platform.models.user_credential import UserCredential
 from alembic import command
 from alembic.config import Config
+from dotenv import load_dotenv
 from sqlalchemy import create_engine, delete
 from sqlalchemy.orm import Session
 
 from tests.support.database import get_test_database_url
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+load_dotenv(PROJECT_ROOT / ".env")
 
 
 @pytest.fixture(scope="session")

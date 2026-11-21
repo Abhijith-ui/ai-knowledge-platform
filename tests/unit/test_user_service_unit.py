@@ -1,4 +1,4 @@
-from ai_knowledge_platform.db.base import Base
+from ai_knowledge_platform.models.user import User
 from ai_knowledge_platform.services.user import UserService
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
@@ -6,7 +6,8 @@ from sqlalchemy.orm import Session
 
 def test_create_user() -> None:
     engine = create_engine("sqlite:///:memory:")
-    Base.metadata.create_all(engine)
+
+    User.__table__.create(engine)
 
     with Session(engine) as db:
         service = UserService(db)
@@ -17,3 +18,5 @@ def test_create_user() -> None:
 
         assert user.email == "test@example.com"
         assert user.id is not None
+
+    engine.dispose()

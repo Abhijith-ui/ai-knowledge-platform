@@ -1,4 +1,3 @@
-
 import enum
 from datetime import UTC, datetime
 from uuid import UUID, uuid4
@@ -76,7 +75,6 @@ class IngestionRun(Base):
         Uuid,
         ForeignKey("documents.id", ondelete="CASCADE"),
         nullable=False,
-        
     )
 
     run_number: Mapped[int] = mapped_column(

@@ -1,10 +1,8 @@
-
 import threading
 from datetime import timedelta
-from unittest.mock import Mock, call
+from unittest.mock import Mock
 
 import pytest
-
 from ai_knowledge_platform.services.document_processing import (
     ProcessingOutcome,
 )
@@ -14,9 +12,7 @@ from ai_knowledge_platform.worker.document_worker import run_worker
 def test_worker_recovers_stale_claims_on_startup() -> None:
     service = Mock()
     service.recover_stale_documents.return_value = 0
-    service.process_next_document.return_value = ProcessingOutcome(
-        status="idle"
-    )
+    service.process_next_document.return_value = ProcessingOutcome(status="idle")
 
     stop_event = threading.Event()
 

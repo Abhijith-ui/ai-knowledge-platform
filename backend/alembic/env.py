@@ -12,7 +12,6 @@ from ai_knowledge_platform import models  # noqa: F401
 from ai_knowledge_platform.core.config import get_settings
 from ai_knowledge_platform.db.base import Base
 
-
 # Alembic Config object.
 config = context.config
 

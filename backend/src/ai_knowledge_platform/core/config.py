@@ -4,6 +4,11 @@ from pathlib import Path
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+# Resolve the repository root independently of the current working directory.
+# config.py -> core -> ai_knowledge_platform -> src -> backend -> repository root
+PROJECT_ROOT = Path(__file__).resolve().parents[4]
+ENV_FILE = PROJECT_ROOT / ".env"
+
 
 class Settings(BaseSettings):
     """Application configuration loaded from environment variables."""
@@ -106,8 +111,9 @@ class Settings(BaseSettings):
         return value
 
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=ENV_FILE,
         env_file_encoding="utf-8",
+        extra="ignore",
     )
 
 

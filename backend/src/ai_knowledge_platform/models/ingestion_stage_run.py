@@ -1,4 +1,3 @@
-
 import enum
 from datetime import UTC, datetime
 from uuid import UUID, uuid4
@@ -10,7 +9,6 @@ from sqlalchemy import (
     ForeignKey,
     Index,
     Integer,
-    String,
     Text,
     UniqueConstraint,
     Uuid,
@@ -20,6 +18,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from ai_knowledge_platform.db.base import Base
 from ai_knowledge_platform.models.ingestion_run import IngestionStage
+
 
 class IngestionStageStatus(str, enum.Enum):
     """Represent the lifecycle of an individual ingestion stage."""
