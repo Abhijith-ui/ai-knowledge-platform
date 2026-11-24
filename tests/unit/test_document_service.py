@@ -4,6 +4,15 @@ from pathlib import Path
 import pytest
 from ai_knowledge_platform.core.config import Settings
 from ai_knowledge_platform.models.document import Document
+from ai_knowledge_platform.models.ingestion_run import (
+    IngestionRun,
+    IngestionRunStatus,
+    IngestionStage,
+)
+from ai_knowledge_platform.models.ingestion_stage_run import (
+    IngestionStageRun,
+    IngestionStageStatus,
+)
 from ai_knowledge_platform.repositories.user import UserRepository
 from ai_knowledge_platform.services.document import (
     DocumentService,
@@ -100,6 +109,40 @@ def test_upload_persists_file_and_metadata(
     assert stored_path.read_bytes() == b"Hello document"
     assert storage.deleted_keys == []
 
+    # Verify the persisted document and active ingestion pointer.
+    persisted_document = db.get(Document, document.id)
+
+    assert persisted_document is not None
+    assert persisted_document.active_ingestion_run_id is not None
+
+    # Verify that exactly one initial ingestion run was created.
+    ingestion_runs = (
+        db.query(IngestionRun).filter(IngestionRun.document_id == document.id).all()
+    )
+
+    assert len(ingestion_runs) == 1
+
+    ingestion_run = ingestion_runs[0]
+
+    assert ingestion_run.id == persisted_document.active_ingestion_run_id
+    assert ingestion_run.document_id == document.id
+    assert ingestion_run.run_number == 1
+    assert ingestion_run.status == IngestionRunStatus.QUEUED
+    assert ingestion_run.trigger_type == "upload"
+
+    # Verify that all ingestion stages were initialized as pending.
+    stage_runs = (
+        db.query(IngestionStageRun)
+        .filter(IngestionStageRun.ingestion_run_id == ingestion_run.id)
+        .all()
+    )
+
+    assert len(stage_runs) == len(IngestionStage)
+
+    assert {stage_run.stage: stage_run.status for stage_run in stage_runs} == {
+        stage: IngestionStageStatus.PENDING for stage in IngestionStage
+    }
+
 
 @pytest.mark.parametrize(
     ("filename", "content_type"),
@@ -133,6 +176,7 @@ def test_upload_rejects_unsupported_or_mismatched_types(
         )
 
     assert db.query(Document).count() == 0
+    assert db.query(IngestionRun).count() == 0
 
 
 def test_upload_rejects_invalid_filename(
@@ -157,6 +201,7 @@ def test_upload_rejects_invalid_filename(
         )
 
     assert db.query(Document).count() == 0
+    assert db.query(IngestionRun).count() == 0
 
 
 def test_upload_propagates_storage_failure(
@@ -178,6 +223,7 @@ def test_upload_propagates_storage_failure(
         )
 
     assert db.query(Document).count() == 0
+    assert db.query(IngestionRun).count() == 0
 
 
 def test_upload_rejects_oversized_file(
@@ -206,6 +252,7 @@ def test_upload_rejects_oversized_file(
         )
 
     assert db.query(Document).count() == 0
+    assert db.query(IngestionRun).count() == 0
     assert not list((tmp_path / "documents").rglob("*.tmp"))
 
 
@@ -233,6 +280,7 @@ def test_upload_rejects_invalid_pdf_content(
 
     assert not list((tmp_path / "documents").rglob("*.tmp"))
     assert db.query(Document).count() == 0
+    assert db.query(IngestionRun).count() == 0
     assert storage.deleted_keys == []
 
 
@@ -279,6 +327,7 @@ def test_upload_rejects_invalid_utf8(
 
     assert not list((tmp_path / "documents").rglob("*.tmp"))
     assert db.query(Document).count() == 0
+    assert db.query(IngestionRun).count() == 0
     assert storage.deleted_keys == []
 
 
@@ -303,6 +352,7 @@ def test_upload_rejects_empty_file(
 
     assert not list((tmp_path / "documents").rglob("*.tmp"))
     assert db.query(Document).count() == 0
+    assert db.query(IngestionRun).count() == 0
     assert storage.deleted_keys == []
 
 

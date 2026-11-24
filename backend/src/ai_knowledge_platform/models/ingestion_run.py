@@ -30,6 +30,7 @@ class IngestionRunStatus(str, enum.Enum):
 
     QUEUED = "queued"
     RUNNING = "running"
+    PARTIAL = "partial"
     SUCCEEDED = "succeeded"
     FAILED = "failed"
     CANCELLED = "cancelled"

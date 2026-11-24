@@ -9,6 +9,9 @@ from sqlalchemy.orm import Session
 from ai_knowledge_platform.core.config import get_settings
 from ai_knowledge_platform.models.document import Document
 from ai_knowledge_platform.repositories.document import DocumentRepository
+from ai_knowledge_platform.repositories.ingestion_run import (
+    IngestionRunRepository,
+)
 from ai_knowledge_platform.storage.base import FileStorage
 from ai_knowledge_platform.storage.local import LocalFileStorage
 
@@ -100,7 +103,7 @@ def validate_document_chunks(
 
 
 class DocumentService:
-    """Coordinate document validation, file storage, and database persistence."""
+    """Coordinate document validation, storage, and ingestion scheduling."""
 
     def __init__(
         self,
@@ -109,7 +112,9 @@ class DocumentService:
     ) -> None:
         self.db = db
         self.repository = DocumentRepository(db)
+        self.ingestion_repository = IngestionRunRepository(db)
         self.settings = get_settings()
+
         self.storage = (
             storage
             if storage is not None
@@ -124,7 +129,8 @@ class DocumentService:
         content_type: str,
         chunks: Iterable[bytes],
     ) -> Document:
-        """Validate and persist a document owned by the specified user."""
+        """Persist an uploaded document and schedule its initial ingestion."""
+
         safe_filename = PurePath(filename.replace("\\", "/")).name.strip()
 
         if not safe_filename or safe_filename in {".", ".."}:
@@ -161,6 +167,7 @@ class DocumentService:
         )
 
         try:
+            # Create document metadata.
             document = self.repository.create(
                 user_id=user_id,
                 filename=safe_filename,
@@ -169,16 +176,28 @@ class DocumentService:
                 checksum_sha256=stored_object.checksum_sha256,
                 storage_key=storage_key,
             )
+
+            # Create the initial ingestion run and its five pending stages.
+            ingestion_run = self.ingestion_repository.create_run(
+                document_id=document.id,
+                trigger_type="upload",
+            )
+
+            # Establish the active ingestion version for this document.
+            document.active_ingestion_run_id = ingestion_run.id
+
+            # Persist all database changes atomically.
             self.db.commit()
+
         except Exception:
             self.db.rollback()
 
             try:
                 self.storage.delete(storage_key)
             except Exception:
-                # Preserve the original database error even if cleanup fails.
+                # Preserve the original database error if cleanup also fails.
                 logger.exception(
-                    "Failed to clean up stored document after database failure."
+                    "Failed to clean up stored document after database failure.",
                 )
 
             raise

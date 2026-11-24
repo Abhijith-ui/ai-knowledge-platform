@@ -15,22 +15,24 @@ from ai_knowledge_platform.db.base import Base
 # Alembic Config object.
 config = context.config
 
+# Configure the database URL if it was not supplied externally.
 if not config.get_main_option("sqlalchemy.url"):
     config.set_main_option(
         "sqlalchemy.url",
         get_settings().database_url,
     )
 
-# Configure logging when a configuration file is available.
+# Configure logging.
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# Importing the models registers their tables in Base.metadata.
+# Importing models registers their tables in Base.metadata.
 target_metadata = Base.metadata
 
 
 def run_migrations_offline() -> None:
     """Run migrations without creating a database engine."""
+
     url = config.get_main_option("sqlalchemy.url")
 
     context.configure(
@@ -46,6 +48,22 @@ def run_migrations_offline() -> None:
 
 def run_migrations_online() -> None:
     """Run migrations using a live database connection."""
+
+    supplied_connection = config.attributes.get("connection")
+
+    if supplied_connection is not None:
+        # Use the externally supplied connection.
+        context.configure(
+            connection=supplied_connection,
+            target_metadata=target_metadata,
+        )
+
+        with context.begin_transaction():
+            context.run_migrations()
+
+        return
+
+    # Create a new engine for normal Alembic CLI execution.
     connectable = engine_from_config(
         config.get_section(config.config_ini_section, {}),
         prefix="sqlalchemy.",
@@ -62,6 +80,7 @@ def run_migrations_online() -> None:
             context.run_migrations()
 
 
+# Select the migration execution mode.
 if context.is_offline_mode():
     run_migrations_offline()
 else:

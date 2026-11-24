@@ -3,6 +3,8 @@ from pathlib import Path
 import pytest
 from ai_knowledge_platform.models.document import Document
 from ai_knowledge_platform.models.document_content import DocumentContent
+from ai_knowledge_platform.models.ingestion_run import IngestionRun
+from ai_knowledge_platform.models.ingestion_stage_run import IngestionStageRun
 from ai_knowledge_platform.models.refresh_session import RefreshSession
 from ai_knowledge_platform.models.user import User
 from ai_knowledge_platform.models.user_credential import UserCredential
@@ -39,7 +41,9 @@ def db(migrated_test_schema: None) -> Session:
 
     try:
         with Session(engine) as session:
+            session.execute(delete(IngestionStageRun))
             session.execute(delete(DocumentContent))
+            session.execute(delete(IngestionRun))
             session.execute(delete(Document))
             session.execute(delete(RefreshSession))
             session.execute(delete(UserCredential))

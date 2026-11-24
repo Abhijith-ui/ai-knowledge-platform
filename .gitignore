@@ -48,3 +48,6 @@ Thumbs.db
 secrets/
 # Local document uploads and runtime data
 /var/
+
+# Database backups
+/backups/
