@@ -5,8 +5,17 @@ from uuid import UUID, uuid4
 
 if TYPE_CHECKING:
     from ai_knowledge_platform.models.document import Document
+    from ai_knowledge_platform.models.document_chunk import DocumentChunk
     from ai_knowledge_platform.models.document_content import DocumentContent
     from ai_knowledge_platform.models.ingestion_stage_run import IngestionStageRun
+
+if TYPE_CHECKING:
+    from ai_knowledge_platform.models.document import Document
+    from ai_knowledge_platform.models.document_content import DocumentContent
+    from ai_knowledge_platform.models.ingestion_stage_run import IngestionStageRun
+
+if TYPE_CHECKING:
+    from ai_knowledge_platform.models.document_chunk import DocumentChunk
 
 from sqlalchemy import (
     CheckConstraint,
@@ -209,4 +218,10 @@ class IngestionRun(Base):
     stage_runs: Mapped[list["IngestionStageRun"]] = relationship(
         back_populates="ingestion_run",
         cascade="all, delete-orphan",
+    )
+
+    chunks: Mapped[list["DocumentChunk"]] = relationship(
+        back_populates="ingestion_run",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
     )

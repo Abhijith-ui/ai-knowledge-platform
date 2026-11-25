@@ -2,15 +2,15 @@ from datetime import UTC, datetime
 from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
-if TYPE_CHECKING:
-    from ai_knowledge_platform.models.ingestion_run import IngestionRun
-
 from sqlalchemy import DateTime, ForeignKey, Integer, Text, UniqueConstraint
 from sqlalchemy.dialects.postgresql import UUID as PG_UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ai_knowledge_platform.db.base import Base
 
+if TYPE_CHECKING:
+    from ai_knowledge_platform.models.document_page import DocumentPage
+    from ai_knowledge_platform.models.ingestion_run import IngestionRun
 
 class DocumentContent(Base):
     """Store extracted text and metadata for an ingestion run."""
@@ -53,4 +53,10 @@ class DocumentContent(Base):
 
     ingestion_run: Mapped["IngestionRun"] = relationship(
         back_populates="content",
+    )
+
+    pages: Mapped[list["DocumentPage"]] = relationship(
+        back_populates="document_content",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
     )

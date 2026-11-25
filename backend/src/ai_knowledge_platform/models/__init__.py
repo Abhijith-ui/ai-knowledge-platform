@@ -1,5 +1,7 @@
 from ai_knowledge_platform.models.document import Document
+from ai_knowledge_platform.models.document_chunk import DocumentChunk
 from ai_knowledge_platform.models.document_content import DocumentContent
+from ai_knowledge_platform.models.document_page import DocumentPage
 from ai_knowledge_platform.models.ingestion_run import IngestionRun
 from ai_knowledge_platform.models.ingestion_stage_run import IngestionStageRun
 from ai_knowledge_platform.models.refresh_session import RefreshSession
@@ -14,4 +16,6 @@ __all__ = [
     "DocumentContent",
     "IngestionRun",
     "IngestionStageRun",
+    "DocumentPage",
+    "DocumentChunk",
 ]
